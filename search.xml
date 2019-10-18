@@ -1,8 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>RDP建立过程</title>
+    <url>/post/1e6d0424.html</url>
+    <content><![CDATA[<h2 id="RDP协议的官方文档"><a href="#RDP协议的官方文档" class="headerlink" title="RDP协议的官方文档"></a>RDP协议的官方文档</h2><p><a href="https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-rdpbcgr/5073f4ed-1e93-45e1-b039-6e30c385867c" target="_blank" rel="noopener">[MS-RDPBCGR]: Remote Desktop Protocol: Basic Connectivity and Graphics Remoting</a></p>
+<p>接下来的内容都是基于此协议</p>
+<h2 id="RDP时序图"><a href="#RDP时序图" class="headerlink" title="RDP时序图"></a>RDP时序图</h2><hr>
+<p><img src="https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-rdpbcgr/ms-rdpbcgr_files/image001.png" alt="RDP时序图"></p>
+<h2 id="连接的十个阶段"><a href="#连接的十个阶段" class="headerlink" title="连接的十个阶段"></a>连接的十个阶段</h2><hr>
+<h3 id="1-Connection-Initiation"><a href="#1-Connection-Initiation" class="headerlink" title="1.Connection Initiation"></a>1.Connection Initiation</h3><p>客户机向服务发送等级0的x.224的连接请求，服务器回应。此后客户机和服务器的所有数据都要包装在x.224的PDU里面</p>
+<h3 id="2-Basic-Settings-Exchange"><a href="#2-Basic-Settings-Exchange" class="headerlink" title="2.Basic Settings Exchange"></a>2.Basic Settings Exchange</h3><p>这个阶段客户机与服务器进行基础设置的交换（比如核心数据、安全数据、网络数据库），客户机发送MCS连接初始化PDU，服务器返回MCS连接响应PDU。连接初始化PDU带有通用会议控制（Generic Conference Control ，GCC）的会议创建请求，连接回应PDU则带有GCC的会议创建回应。</p>
+<p><img src="https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-rdpbcgr/ms-rdpbcgr_files/image002.png" alt="MCS连接初始化"></p>
+<p><img src="https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-rdpbcgr/ms-rdpbcgr_files/image003.png" alt="MCS连接回应"></p>
+<h3 id="3-Channel-Connection"><a href="#3-Channel-Connection" class="headerlink" title="3.Channel Connection"></a>3.Channel Connection</h3><p>客户机先发送MCS建立域请求PDU再发送MCS附加到用户请求PDU，以此讲主用户标识附加到MCS域。服务器收到后会回复MCS附加用户PDU，其中包含着用户通道ID。</p>
+<p>然后，客户端通过使用多个MCS通道连接请求PDU连接用户通道、输入/输出(I/O)通道和所有静态虚拟通道(I/O和静态虚拟通道id来自嵌入在GCC包中的数据)。</p>
+<p>服务端会对每一个通道连接请求发送一个MCS通道连接确认PDU。（RDP 4.0, 5.0, 5.1, 5.2, 6.0, 6.1, 7.0, 7.1, 8.0, 10.2, 10.3, 10.4, 10.5只能在收到上一个通道连接的确认后才能发下一个，RDP 8.1, 10.0, 10.1可以一次性全部发送连接请求）</p>
+<p>从这之后客户机发送的数据都要包装在MCS发送数据请求PDU中，服务器返回的数据都要包装在MCS发送数据指示PDU中。</p>
+<h3 id="4-RDP-Security-Commencement"><a href="#4-RDP-Security-Commencement" class="headerlink" title="4.RDP Security Commencement"></a>4.RDP Security Commencement</h3><p>如果使用了标准RDP安全机制，并且加密生效的情况下（这个你可以通过服务器在Basic Settings Exchange阶段中的返回数据中知道）。<br>客户机需要向服务器发送一个包含由服务器给出的公钥加密过的32字节随机数的安全交换PDU。（公钥在Basic Settings Exchange阶段中的返回数据中可以找到）<br>客户机和服务器将通过这32字节的随机数生成会话密钥，以后的PDU将用此来进行加密和验证完整性。</p>
+<p>从这里开始后续的RDP数据都可以加密</p>
+<h3 id="5-Secure-Settings-Exchange"><a href="#5-Secure-Settings-Exchange" class="headerlink" title="5.Secure Settings Exchange"></a>5.Secure Settings Exchange</h3><p>一些敏感数据比如（用户名，密码，重新连接的cookie）将通过用户信息PDU发送到服务器上</p>
+<h3 id="6-Optional-Connect-Time-Auto-Detection"><a href="#6-Optional-Connect-Time-Auto-Detection" class="headerlink" title="6.Optional Connect-Time Auto-Detection"></a>6.Optional Connect-Time Auto-Detection</h3><p>可选的检测阶段，用于确定双发间网络的时延和带宽。</p>
+<h3 id="7-Licensing"><a href="#7-Licensing" class="headerlink" title="7.Licensing"></a>7.Licensing</h3><p>服务器向客户机传输许可证，客户机保存后，在随后连接中将许可证发送到服务器来验证，本文默认服务器不会向客户机发送许可。</p>
+<h3 id="8-Optional-Multitransport-Bootstrapping"><a href="#8-Optional-Multitransport-Bootstrapping" class="headerlink" title="8.Optional Multitransport Bootstrapping"></a>8.Optional Multitransport Bootstrapping</h3><p>服务器可以选择进行多重传输连接</p>
+<h3 id="9-Capabilities-Exchange"><a href="#9-Capabilities-Exchange" class="headerlink" title="9.Capabilities Exchange"></a>9.Capabilities Exchange</h3><p>这个阶段服务器会通过需求活动PDU发送自己支持的功能集，随后会发送监视器布局PDU（可选）。客户机需要返回确认活动PDU</p>
+<h3 id="10-Connection-Finalization"><a href="#10-Connection-Finalization" class="headerlink" title="10.Connection Finalization"></a>10.Connection Finalization</h3><p>服务器和客户机互相发送数据来确定连接的细节，没有严格要求相互间必须同步，发送的包按顺序发送即可，即客户机和服务端异步按顺序发送连接的信息。</p>
+<p>客户机在阶段9发送了确认活动PDU后就开始发送鼠标键盘的输入，服务端在收到字体列表的PDU后就可以发送图像输出。</p>
+]]></content>
+      <categories>
+        <category>安全漏洞</category>
+      </categories>
+      <tags>
+        <tag>安全</tag>
+        <tag>windows</tag>
+        <tag>rdp</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>CVE-2019-0708</title>
+    <url>/post/24c02121.html</url>
+    <content><![CDATA[<h2 id="CVE-2019-0708"><a href="#CVE-2019-0708" class="headerlink" title="CVE-2019-0708"></a>CVE-2019-0708</h2><p>CVE-2019-0708是微软于5月14日公布的一个远程桌面服务的远程代码执行漏洞(CVE-2019-0708)，利用此漏洞可以直接获取windows服务器的权限。<br>现在网上已经有安全研究人员披露该漏洞远程crash PoC，对于某些系统已经能获取shell执行命令了。</p>
+<h2 id="影响系统"><a href="#影响系统" class="headerlink" title="影响系统"></a>影响系统</h2><ul>
+<li>Windows 2003</li>
+<li>Windows XP</li>
+<li>Windows Vista</li>
+<li>Windows 7</li>
+<li>Windows Server 2008</li>
+<li>Windows Server 2008 R2</li>
+</ul>
+<h2 id="防范方法"><a href="#防范方法" class="headerlink" title="防范方法"></a>防范方法</h2><h3 id="下载相关补丁"><a href="#下载相关补丁" class="headerlink" title="下载相关补丁"></a>下载相关补丁</h3><p><a href="https://portal.msrc.microsoft.com/en-US/security-guidance/advisory/CVE-2019-0708" target="_blank" rel="noopener">windows7和windows server 08补丁下载</a><br><a href="https://support.microsoft.com/en-us/help/4500705/customer-guidance-for-cve-2019-0708" target="_blank" rel="noopener">windows xp和windows sever 03补丁下载</a></p>
+<h3 id="开启NLP"><a href="#开启NLP" class="headerlink" title="开启NLP"></a>开启NLP</h3><p>打开 控制面板\所有控制面板项\系统，点开右侧的远程设置，在远程桌面项中切换为 </p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">仅允许运行使用网络级别身份验证的远程桌面的计算机连接（更安全）（N）</span><br></pre></td></tr></table></figure>
+
+<p>一般为第三项</p>
+<h2 id="相关利用方法"><a href="#相关利用方法" class="headerlink" title="相关利用方法"></a>相关利用方法</h2><p><a href="https://github.com/rapid7/metasploit-framework/pull/12283" target="_blank" rel="noopener">cve-2019-0708的POC和EXP</a></p>
+<h2 id="后言"><a href="#后言" class="headerlink" title="后言"></a>后言</h2><p>下篇文章讲讲一下rdp协议的一些知识<br><a href="https://doasromansdo.github.io/post/1e6d0424.html#more" target="_blank" rel="noopener">rpd的连接过程</a></p>
+]]></content>
+      <categories>
+        <category>安全漏洞</category>
+      </categories>
+      <tags>
+        <tag>安全</tag>
+        <tag>windows</tag>
+        <tag>rdp</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Hello World</title>
-    <url>/2019/10/15/hello-world/</url>
+    <url>/post/4a17b156.html</url>
     <content><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
 <h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
 

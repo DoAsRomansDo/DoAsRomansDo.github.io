@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="安全,windows,rdp,">
 
 
 
@@ -79,17 +79,22 @@
 
 
 
-<meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta name="description" content="RDP协议的官方文档[MS-RDPBCGR]: Remote Desktop Protocol: Basic Connectivity and Graphics Remoting 接下来的内容都是基于此协议 RDP时序图  连接的十个阶段 1.Connection Initiation客户机向服务发送等级0的x.224的连接请求，服务器回应。此后客户机和服务器的所有数据都要包装在x.224的PDU">
+<meta name="keywords" content="安全,windows,rdp">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="http://yoursite.com/2019/10/15/hello-world/index.html">
+<meta property="og:title" content="RDP建立过程">
+<meta property="og:url" content="http://yoursite.com/post/1e6d0424.html">
 <meta property="og:site_name" content="Roman&#39;s blog">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta property="og:description" content="RDP协议的官方文档[MS-RDPBCGR]: Remote Desktop Protocol: Basic Connectivity and Graphics Remoting 接下来的内容都是基于此协议 RDP时序图  连接的十个阶段 1.Connection Initiation客户机向服务发送等级0的x.224的连接请求，服务器回应。此后客户机和服务器的所有数据都要包装在x.224的PDU">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-10-15T02:54:17.207Z">
+<meta property="og:image" content="https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-rdpbcgr/ms-rdpbcgr_files/image001.png">
+<meta property="og:image" content="https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-rdpbcgr/ms-rdpbcgr_files/image002.png">
+<meta property="og:image" content="https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-rdpbcgr/ms-rdpbcgr_files/image003.png">
+<meta property="og:updated_time" content="2019-10-18T07:26:13.819Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hello World">
-<meta name="twitter:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta name="twitter:title" content="RDP建立过程">
+<meta name="twitter:description" content="RDP协议的官方文档[MS-RDPBCGR]: Remote Desktop Protocol: Basic Connectivity and Graphics Remoting 接下来的内容都是基于此协议 RDP时序图  连接的十个阶段 1.Connection Initiation客户机向服务发送等级0的x.224的连接请求，服务器回应。此后客户机和服务器的所有数据都要包装在x.224的PDU">
+<meta name="twitter:image" content="https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-rdpbcgr/ms-rdpbcgr_files/image001.png">
 
 
 
@@ -119,13 +124,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/10/15/hello-world/">
+  <link rel="canonical" href="http://yoursite.com/post/1e6d0424.html">
 
 
 
 
 
-  <title>Hello World | Roman's blog</title>
+  <title>RDP建立过程 | Roman's blog</title>
   
 
 
@@ -294,7 +299,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/15/hello-world/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/post/1e6d0424.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Roman">
@@ -311,7 +316,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Hello World</h1>
+          <h1 class="post-title" itemprop="name headline">RDP建立过程</h1>
         
 
         <div class="post-meta">
@@ -323,8 +328,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-10-15T10:54:17+08:00">
-                2019-10-15
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-10-18T15:26:13+08:00">
+                2019-10-18
               </time>
             
 
@@ -333,6 +338,28 @@
             
           </span>
 
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/安全漏洞/" itemprop="url" rel="index">
+                    <span itemprop="name">安全漏洞</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -361,19 +388,28 @@
       
 
       
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+        <h2 id="RDP协议的官方文档"><a href="#RDP协议的官方文档" class="headerlink" title="RDP协议的官方文档"></a>RDP协议的官方文档</h2><p><a href="https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-rdpbcgr/5073f4ed-1e93-45e1-b039-6e30c385867c" target="_blank" rel="noopener">[MS-RDPBCGR]: Remote Desktop Protocol: Basic Connectivity and Graphics Remoting</a></p>
+<p>接下来的内容都是基于此协议</p>
+<h2 id="RDP时序图"><a href="#RDP时序图" class="headerlink" title="RDP时序图"></a>RDP时序图</h2><hr>
+<p><img src="https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-rdpbcgr/ms-rdpbcgr_files/image001.png" alt="RDP时序图"></p>
+<h2 id="连接的十个阶段"><a href="#连接的十个阶段" class="headerlink" title="连接的十个阶段"></a>连接的十个阶段</h2><hr>
+<h3 id="1-Connection-Initiation"><a href="#1-Connection-Initiation" class="headerlink" title="1.Connection Initiation"></a>1.Connection Initiation</h3><p>客户机向服务发送等级0的x.224的连接请求，服务器回应。此后客户机和服务器的所有数据都要包装在x.224的PDU里面</p>
+<h3 id="2-Basic-Settings-Exchange"><a href="#2-Basic-Settings-Exchange" class="headerlink" title="2.Basic Settings Exchange"></a>2.Basic Settings Exchange</h3><p>这个阶段客户机与服务器进行基础设置的交换（比如核心数据、安全数据、网络数据库），客户机发送MCS连接初始化PDU，服务器返回MCS连接响应PDU。连接初始化PDU带有通用会议控制（Generic Conference Control ，GCC）的会议创建请求，连接回应PDU则带有GCC的会议创建回应。</p>
+<p><img src="https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-rdpbcgr/ms-rdpbcgr_files/image002.png" alt="MCS连接初始化"></p>
+<p><img src="https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-rdpbcgr/ms-rdpbcgr_files/image003.png" alt="MCS连接回应"></p>
+<h3 id="3-Channel-Connection"><a href="#3-Channel-Connection" class="headerlink" title="3.Channel Connection"></a>3.Channel Connection</h3><p>客户机先发送MCS建立域请求PDU再发送MCS附加到用户请求PDU，以此讲主用户标识附加到MCS域。服务器收到后会回复MCS附加用户PDU，其中包含着用户通道ID。</p>
+<p>然后，客户端通过使用多个MCS通道连接请求PDU连接用户通道、输入/输出(I/O)通道和所有静态虚拟通道(I/O和静态虚拟通道id来自嵌入在GCC包中的数据)。</p>
+<p>服务端会对每一个通道连接请求发送一个MCS通道连接确认PDU。（RDP 4.0, 5.0, 5.1, 5.2, 6.0, 6.1, 7.0, 7.1, 8.0, 10.2, 10.3, 10.4, 10.5只能在收到上一个通道连接的确认后才能发下一个，RDP 8.1, 10.0, 10.1可以一次性全部发送连接请求）</p>
+<p>从这之后客户机发送的数据都要包装在MCS发送数据请求PDU中，服务器返回的数据都要包装在MCS发送数据指示PDU中。</p>
+<h3 id="4-RDP-Security-Commencement"><a href="#4-RDP-Security-Commencement" class="headerlink" title="4.RDP Security Commencement"></a>4.RDP Security Commencement</h3><p>如果使用了标准RDP安全机制，并且加密生效的情况下（这个你可以通过服务器在Basic Settings Exchange阶段中的返回数据中知道）。<br>客户机需要向服务器发送一个包含由服务器给出的公钥加密过的32字节随机数的安全交换PDU。（公钥在Basic Settings Exchange阶段中的返回数据中可以找到）<br>客户机和服务器将通过这32字节的随机数生成会话密钥，以后的PDU将用此来进行加密和验证完整性。</p>
+<p>从这里开始后续的RDP数据都可以加密</p>
+<h3 id="5-Secure-Settings-Exchange"><a href="#5-Secure-Settings-Exchange" class="headerlink" title="5.Secure Settings Exchange"></a>5.Secure Settings Exchange</h3><p>一些敏感数据比如（用户名，密码，重新连接的cookie）将通过用户信息PDU发送到服务器上</p>
+<h3 id="6-Optional-Connect-Time-Auto-Detection"><a href="#6-Optional-Connect-Time-Auto-Detection" class="headerlink" title="6.Optional Connect-Time Auto-Detection"></a>6.Optional Connect-Time Auto-Detection</h3><p>可选的检测阶段，用于确定双发间网络的时延和带宽。</p>
+<h3 id="7-Licensing"><a href="#7-Licensing" class="headerlink" title="7.Licensing"></a>7.Licensing</h3><p>服务器向客户机传输许可证，客户机保存后，在随后连接中将许可证发送到服务器来验证，本文默认服务器不会向客户机发送许可。</p>
+<h3 id="8-Optional-Multitransport-Bootstrapping"><a href="#8-Optional-Multitransport-Bootstrapping" class="headerlink" title="8.Optional Multitransport Bootstrapping"></a>8.Optional Multitransport Bootstrapping</h3><p>服务器可以选择进行多重传输连接</p>
+<h3 id="9-Capabilities-Exchange"><a href="#9-Capabilities-Exchange" class="headerlink" title="9.Capabilities Exchange"></a>9.Capabilities Exchange</h3><p>这个阶段服务器会通过需求活动PDU发送自己支持的功能集，随后会发送监视器布局PDU（可选）。客户机需要返回确认活动PDU</p>
+<h3 id="10-Connection-Finalization"><a href="#10-Connection-Finalization" class="headerlink" title="10.Connection Finalization"></a>10.Connection Finalization</h3><p>服务器和客户机互相发送数据来确定连接的细节，没有严格要求相互间必须同步，发送的包按顺序发送即可，即客户机和服务端异步按顺序发送连接的信息。</p>
+<p>客户机在阶段9发送了确认活动PDU后就开始发送鼠标键盘的输入，服务端在收到字体列表的PDU后就可以发送图像输出。</p>
 
       
     </div>
@@ -389,11 +425,37 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/安全/" rel="tag"># 安全</a>
+          
+            <a href="/tags/windows/" rel="tag"># windows</a>
+          
+            <a href="/tags/rdp/" rel="tag"># rdp</a>
+          
+        </div>
+      
 
       
       
       
 
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/post/24c02121.html" rel="next" title="CVE-2019-0708">
+                <i class="fa fa-chevron-left"></i> CVE-2019-0708
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
       
 
       
@@ -467,14 +529,32 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-count">3</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
             
 
             
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
 
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
             
 
           </nav>
@@ -514,7 +594,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Quick-Start"><span class="nav-number">1.</span> <span class="nav-text">Quick Start</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Create-a-new-post"><span class="nav-number">1.1.</span> <span class="nav-text">Create a new post</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Run-server"><span class="nav-number">1.2.</span> <span class="nav-text">Run server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Generate-static-files"><span class="nav-number">1.3.</span> <span class="nav-text">Generate static files</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deploy-to-remote-sites"><span class="nav-number">1.4.</span> <span class="nav-text">Deploy to remote sites</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#RDP协议的官方文档"><span class="nav-number">1.</span> <span class="nav-text">RDP协议的官方文档</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RDP时序图"><span class="nav-number">2.</span> <span class="nav-text">RDP时序图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#连接的十个阶段"><span class="nav-number">3.</span> <span class="nav-text">连接的十个阶段</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Connection-Initiation"><span class="nav-number">3.1.</span> <span class="nav-text">1.Connection Initiation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Basic-Settings-Exchange"><span class="nav-number">3.2.</span> <span class="nav-text">2.Basic Settings Exchange</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Channel-Connection"><span class="nav-number">3.3.</span> <span class="nav-text">3.Channel Connection</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-RDP-Security-Commencement"><span class="nav-number">3.4.</span> <span class="nav-text">4.RDP Security Commencement</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-Secure-Settings-Exchange"><span class="nav-number">3.5.</span> <span class="nav-text">5.Secure Settings Exchange</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-Optional-Connect-Time-Auto-Detection"><span class="nav-number">3.6.</span> <span class="nav-text">6.Optional Connect-Time Auto-Detection</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-Licensing"><span class="nav-number">3.7.</span> <span class="nav-text">7.Licensing</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-Optional-Multitransport-Bootstrapping"><span class="nav-number">3.8.</span> <span class="nav-text">8.Optional Multitransport Bootstrapping</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-Capabilities-Exchange"><span class="nav-number">3.9.</span> <span class="nav-text">9.Capabilities Exchange</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-Connection-Finalization"><span class="nav-number">3.10.</span> <span class="nav-text">10.Connection Finalization</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -556,6 +636,15 @@
 
 
 
+
+#mermaid支持
+
+  <script src="/lib/custom/mermaid.min.js"></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize("");
+    }
+  </script>
 
         
 
