@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="linux,Ubuntu,">
 
 
 
@@ -79,17 +79,18 @@
 
 
 
-<meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta name="description" content="将自己的软件打包成deb包1.deb包的构成 数据包，你需要安装的程序数据;  安装信息及控制脚本包, 包含deb的安装说明，标识;  deb文件的一些二进制数据，包括文件头等信息。   2.创建工作目录这里以~/work 为工作目录 12$mkdir work$cd work  3.描述文件和控制脚本工作目录下的文件树如下 12345678.">
+<meta name="keywords" content="linux,Ubuntu">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="http://yoursite.com/post/4a17b156.html">
+<meta property="og:title" content="deb包的制作">
+<meta property="og:url" content="http://yoursite.com/post/b1d021eb.html">
 <meta property="og:site_name" content="Roman&#39;s blog">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta property="og:description" content="将自己的软件打包成deb包1.deb包的构成 数据包，你需要安装的程序数据;  安装信息及控制脚本包, 包含deb的安装说明，标识;  deb文件的一些二进制数据，包括文件头等信息。   2.创建工作目录这里以~/work 为工作目录 12$mkdir work$cd work  3.描述文件和控制脚本工作目录下的文件树如下 12345678.">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-10-18T07:11:19.498Z">
+<meta property="og:updated_time" content="2019-11-05T08:43:33.915Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hello World">
-<meta name="twitter:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta name="twitter:title" content="deb包的制作">
+<meta name="twitter:description" content="将自己的软件打包成deb包1.deb包的构成 数据包，你需要安装的程序数据;  安装信息及控制脚本包, 包含deb的安装说明，标识;  deb文件的一些二进制数据，包括文件头等信息。   2.创建工作目录这里以~/work 为工作目录 12$mkdir work$cd work  3.描述文件和控制脚本工作目录下的文件树如下 12345678.">
 
 
 
@@ -119,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/post/4a17b156.html">
+  <link rel="canonical" href="http://yoursite.com/post/b1d021eb.html">
 
 
 
 
 
-  <title>Hello World | Roman's blog</title>
+  <title>deb包的制作 | Roman's blog</title>
   
 
 
@@ -294,7 +295,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/post/4a17b156.html">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/post/b1d021eb.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Roman">
@@ -311,7 +312,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Hello World</h1>
+          <h1 class="post-title" itemprop="name headline">deb包的制作</h1>
         
 
         <div class="post-meta">
@@ -323,8 +324,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-10-15T10:54:17+08:00">
-                2019-10-15
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-11-05T16:36:26+08:00">
+                2019-11-05
               </time>
             
 
@@ -333,6 +334,28 @@
             
           </span>
 
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -361,20 +384,141 @@
       
 
       
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
+        <h2 id="将自己的软件打包成deb包"><a href="#将自己的软件打包成deb包" class="headerlink" title="将自己的软件打包成deb包"></a>将自己的软件打包成deb包</h2><h3 id="1-deb包的构成"><a href="#1-deb包的构成" class="headerlink" title="1.deb包的构成"></a>1.deb包的构成</h3><ul>
+<li><p>数据包，你需要安装的程序数据;</p>
+</li>
+<li><p>安装信息及控制脚本包, 包含deb的安装说明，标识;</p>
+</li>
+<li><p>deb文件的一些二进制数据，包括文件头等信息。</p>
+</li>
+</ul>
+<h3 id="2-创建工作目录"><a href="#2-创建工作目录" class="headerlink" title="2.创建工作目录"></a>2.创建工作目录</h3><p>这里以~/work 为工作目录</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$mkdir</span> work</span><br><span class="line"><span class="variable">$cd</span> work</span><br></pre></td></tr></table></figure>
 
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<h3 id="3-描述文件和控制脚本"><a href="#3-描述文件和控制脚本" class="headerlink" title="3.描述文件和控制脚本"></a>3.描述文件和控制脚本</h3><p>工作目录下的文件树如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">.                                                       </span><br><span class="line">├── DEBIAN</span><br><span class="line">│   ├── control</span><br><span class="line">│   ├── preinst</span><br><span class="line">│   ├── postinst</span><br><span class="line">│   ├── prerm</span><br><span class="line">│   └── postrm</span><br><span class="line">└── 模拟根目录</span><br></pre></td></tr></table></figure>
 
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<p>control文件时程序的描述信息，剩下的四个文件时相关的控制脚本。</p>
+<table>
+<thead>
+<tr>
+<th align="center">文件</th>
+<th align="center">运行时机</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">preinst</td>
+<td align="center">解包数据包前运行的脚本</td>
+</tr>
+<tr>
+<td align="center">postinst</td>
+<td align="center">解包数据包后运行的脚本</td>
+</tr>
+<tr>
+<td align="center">prerm</td>
+<td align="center">卸载时，在删除文件前运行的脚本</td>
+</tr>
+<tr>
+<td align="center">postrm</td>
+<td align="center">删除文件后运行的脚本</td>
+</tr>
+</tbody></table>
+<p>四个控制脚本不是必须的，但是control文件是必须存在的。<br>这里给出一个control文件的例子</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Package: soft</span><br><span class="line">Version: 1.0.1</span><br><span class="line">Section: utils</span><br><span class="line">Priority: optional</span><br><span class="line">Architecture: i386</span><br><span class="line">Depends:</span><br><span class="line">Installed-Size: 512</span><br><span class="line">Maintainer: xxx@xxx.com</span><br><span class="line">Description: soft package</span><br></pre></td></tr></table></figure>
 
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<p>字段解释：</p>
+<table>
+<thead>
+<tr>
+<th align="left">字段</th>
+<th align="left">意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Package</td>
+<td align="left">指该软件包的名字。如果你的软件包名称有两个词，用一个连字符（-）把它们连起来。软件包的名称只能有小写的英文字母，数字以及”+”和”-“。</td>
+</tr>
+<tr>
+<td align="left">Version</td>
+<td align="left">显然是程序的版本。这里的值不包括连字符。</td>
+</tr>
+<tr>
+<td align="left">Section</td>
+<td align="left">列出了你的软件属于的类别，可能的值包括admin（管理），games（游戏），gnome，kde，mail（电子邮件），misc（杂项，miscellaneous），net（网络），sound（声音），text（文本），utils（实用工具）和web（万维网）。</td>
+</tr>
+<tr>
+<td align="left">Priority</td>
+<td align="left">声明这个包的优先级（大部分的时候使用optional（可选的））。</td>
+</tr>
+<tr>
+<td align="left">Architecture</td>
+<td align="left">是该程序可运行的CPU架构（可能的值为i386，amd64和powerpc，大小写敏感。</td>
+</tr>
+<tr>
+<td align="left">Eseential</td>
+<td align="left">指该软件包是否是必须的（大部分的时候不是）。</td>
+</tr>
+<tr>
+<td align="left">Depends</td>
+<td align="left">这个程序的依赖程序。</td>
+</tr>
+<tr>
+<td align="left">Recommends</td>
+<td align="left">推荐安装的程序，一般都要装。</td>
+</tr>
+<tr>
+<td align="left">Suggests</td>
+<td align="left">建议安装，可能给这个软件带来更多功能，但是不安装也行</td>
+</tr>
+<tr>
+<td align="left">Install-Size</td>
+<td align="left">程序安装后的大小，按KB算。</td>
+</tr>
+<tr>
+<td align="left">Maintainer</td>
+<td align="left">维护者（写上你的名字，后面的方括号”[ ]”里留下你的电子邮件地址）。</td>
+</tr>
+<tr>
+<td align="left">Conflicts</td>
+<td align="left">表示跟这个程序冲突的软件。</td>
+</tr>
+<tr>
+<td align="left">Replaces</td>
+<td align="left">表明哪些软件包将被这个程序取代。</td>
+</tr>
+<tr>
+<td align="left">Description</td>
+<td align="left">显示你的描述。</td>
+</tr>
+</tbody></table>
+<ul>
+<li>依赖包的表示<br>  用英文的半角逗号分开不同的依赖关系(,)。如果两个软件中的任何一个可以工作，用竖线”|”分开它们。你也可以指定特定的版本，用在括号里用&lt;&lt;（小于），&lt;=（小于或等于），=（等于），&gt;=（大于或等于），或&gt;&gt;（大于）来表示。</li>
+</ul>
+<h3 id="4-需要安装的文件"><a href="#4-需要安装的文件" class="headerlink" title="4.需要安装的文件"></a>4.需要安装的文件</h3><p>准备好描述文件和相关的脚本后，就可以将你的程序放在模拟根目录下。<br>比如有一个soft.out文件。<br>安装到/user/local/bin目录下，那么在work目录下创建user/local/bin。<br>把soft.out放到~/work/user/local/bin下。<br>这个就是模拟根目录的意义。</p>
+<p>文件放置妥当后的目录结构</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── DEBIAN</span><br><span class="line">│   └── control                                                              </span><br><span class="line">└── usr</span><br><span class="line">    └── local</span><br><span class="line">        └── bin</span><br><span class="line">            └── soft.out</span><br></pre></td></tr></table></figure>
 
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+<h3 id="5-打包"><a href="#5-打包" class="headerlink" title="5.打包"></a>5.打包</h3><p>在work目录下执行以下指令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$dpkg</span> -b . ~/soft.deb</span><br></pre></td></tr></table></figure>
 
+<p>即可完成打包。</p>
+<h3 id="相关的dpkg命令"><a href="#相关的dpkg命令" class="headerlink" title="*相关的dpkg命令"></a>*相关的dpkg命令</h3><p>安装前查看包内数据</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$dpkg</span> -c debname</span><br></pre></td></tr></table></figure>
+
+<p>安装deb包</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$dpkg</span> -i debname</span><br></pre></td></tr></table></figure>
+
+<p>卸载deb包</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$dpkg</span> -r debname</span><br></pre></td></tr></table></figure>
+
+<p>查看某文件属于哪个包</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$dpkg</span> -S filename</span><br></pre></td></tr></table></figure>
+
+<p>释放数据到某个文件下</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$dpkg</span> -X debname dirname</span><br></pre></td></tr></table></figure>
+
+<p>释放控制信息到当前的DEBIAN目录下</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$dpkg</span> -e debname</span><br></pre></td></tr></table></figure>
       
     </div>
     
@@ -389,6 +533,14 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/linux/" rel="tag"># linux</a>
+          
+            <a href="/tags/Ubuntu/" rel="tag"># Ubuntu</a>
+          
+        </div>
+      
 
       
       
@@ -398,14 +550,18 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/post/13cae37e.html" rel="next" title="CVE-2019-14287复现">
+                <i class="fa fa-chevron-left"></i> CVE-2019-14287复现
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/post/24c02121.html" rel="prev" title="CVE-2019-0708">
-                CVE-2019-0708 <i class="fa fa-chevron-right"></i>
+              <a href="/post/7d33fc70.html" rel="prev" title="Ubuntu16.04 server 安装中的坑">
+                Ubuntu16.04 server 安装中的坑 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -548,7 +704,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Quick-Start"><span class="nav-number">1.</span> <span class="nav-text">Quick Start</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Create-a-new-post"><span class="nav-number">1.1.</span> <span class="nav-text">Create a new post</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Run-server"><span class="nav-number">1.2.</span> <span class="nav-text">Run server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Generate-static-files"><span class="nav-number">1.3.</span> <span class="nav-text">Generate static files</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deploy-to-remote-sites"><span class="nav-number">1.4.</span> <span class="nav-text">Deploy to remote sites</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#将自己的软件打包成deb包"><span class="nav-number">1.</span> <span class="nav-text">将自己的软件打包成deb包</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-deb包的构成"><span class="nav-number">1.1.</span> <span class="nav-text">1.deb包的构成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-创建工作目录"><span class="nav-number">1.2.</span> <span class="nav-text">2.创建工作目录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-描述文件和控制脚本"><span class="nav-number">1.3.</span> <span class="nav-text">3.描述文件和控制脚本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-需要安装的文件"><span class="nav-number">1.4.</span> <span class="nav-text">4.需要安装的文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-打包"><span class="nav-number">1.5.</span> <span class="nav-text">5.打包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#相关的dpkg命令"><span class="nav-number">1.6.</span> <span class="nav-text">*相关的dpkg命令</span></a></li></ol></li></ol></div>
             
 
           </div>

@@ -1,6 +1,438 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>在Ubuntu安装镜像中添加软件包</title>
+    <url>/post/6a6ee787.html</url>
+    <content><![CDATA[<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>本教程是在ubuntu16.04 desktop amd64上进行编辑。<br>镜像为ubuntu16.04 server amd64。<br>参考地址：<br><a href="https://help.ubuntu.com/community/InstallCDCustomization?action=show&redirect=InstallCDCustomizationHowTo" target="_blank" rel="noopener">InstallCDCustomization</a><br><a href="https://help.ubuntu.com/community/LiveCDCustomization" target="_blank" rel="noopener">LiveCDCustomization</a><br><a href="https://wiki.ubuntu.com/定制Ubuntu安装CD" target="_blank" rel="noopener">定制Ubuntu安装CD</a></p>
+<p>这里对接下来使用的一些变量进行说明</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="variable">$isopath</span>        <span class="comment">#iso文件的路径</span></span><br><span class="line"><span class="variable">$mountpoint</span>     <span class="comment">#将iso挂载的点</span></span><br><span class="line"><span class="variable">$imagepath</span>      <span class="comment">#将iso文件复制到的目录</span></span><br><span class="line"><span class="variable">$keybuild</span>       <span class="comment">#构建ubuntu-keyring包的位置</span></span><br><span class="line"><span class="variable">$yourkeyid</span>      <span class="comment">#你自己生成的key</span></span><br><span class="line"><span class="variable">$indicesDir</span>     <span class="comment">#下载的indice文件</span></span><br><span class="line"><span class="variable">$DIST</span>           <span class="comment">#ubuntu的开发代号,使用第一个单词，比如16.04为xenial</span></span><br><span class="line"><span class="variable">$version</span>        <span class="comment">#ubuntu的版本号</span></span><br><span class="line"><span class="variable">$aptftparchiveconf</span>  <span class="comment">#存放apt-ftparchive配置文件的目录</span></span><br><span class="line"><span class="variable">$APTCONF</span>        <span class="comment">#release.conf的位置</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="1-拷贝镜像内容到硬盘上"><a href="#1-拷贝镜像内容到硬盘上" class="headerlink" title="1.拷贝镜像内容到硬盘上"></a>1.拷贝镜像内容到硬盘上</h2><p>挂载镜像</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mount -o loop <span class="variable">$isopath</span> <span class="variable">$mountpoint</span></span><br></pre></td></tr></table></figure>
+
+<p>使用rsync复制文件到硬盘</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rsync -av <span class="variable">$mountpoint</span> <span class="variable">$imagepath</span></span><br></pre></td></tr></table></figure>
+
+<p>或者直接使用cp命令拷贝</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir -p <span class="variable">$imagepath</span></span><br><span class="line">cp -a <span class="variable">$mountpoint</span> <span class="variable">$imagepath</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>注意在复制完后查看一下，是否.disk也复制过去了，如果没有，最终镜像安装会出现这不是一张UbuntuCD的警告。</li>
+</ul>
+<h2 id="2-创建extras组件"><a href="#2-创建extras组件" class="headerlink" title="2.创建extras组件"></a>2.创建extras组件</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> <span class="variable">$imagepath</span></span><br><span class="line">mkdir -p pool/extras/</span><br></pre></td></tr></table></figure>
+
+<p>把你想要安装的.deb包都放到pool/extras/目录下。</p>
+<h2 id="3-生成新的ubuntu-keyring-deb来对你的CD进行签名"><a href="#3-生成新的ubuntu-keyring-deb来对你的CD进行签名" class="headerlink" title="3.生成新的ubuntu-keyring.deb来对你的CD进行签名"></a>3.生成新的ubuntu-keyring.deb来对你的CD进行签名</h2><p>我们需要使用GPG来对release文件进行签名，安装系统会根据所持有的Ubuntu-keyring包来对公钥签名进行验证。<br>为了完成密钥的生成你需要下载gpg包。<br>签名密钥生成的命令</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">gpg --gen-key</span><br></pre></td></tr></table></figure>
+
+<p>一切都按默认的来就行，不过教程上种类使用的是DSA and Elgamal，因此我也采用了这个种类。<br>列出key</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">gpg --list-keys</span><br><span class="line">pub   1024D/437D05B5 2006-09-08</span><br><span class="line">uid                  XXX Signing Key &lt;packages@xxx.example.org&gt;</span><br><span class="line">sub   2048g/79164387 2006-09-08</span><br></pre></td></tr></table></figure>
+
+<p>你也可以在–list-keys 后面加参数来查找相关的key</p>
+<p>生成完密钥后，构建包含自己密钥的ubuntu-keyring包</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> <span class="variable">$keybuild</span></span><br><span class="line">sudo apt-get install fakeroot   </span><br><span class="line">apt-get <span class="built_in">source</span> ubuntu-keyring</span><br><span class="line"><span class="built_in">cd</span> ubuntu-keyring-2012.05.19/keyrings</span><br><span class="line">gpg --import &lt; ubuntu-archive-keyring.gpg</span><br><span class="line">gpg --list-keys <span class="string">"你的key的名字或者邮箱"</span></span><br><span class="line">gpg --<span class="built_in">export</span> FBB75451 437D05B5 C0B21F32 EFE21092 <span class="variable">$yourkeyid</span> &gt; ubuntu-archive-keyring.gpg</span><br><span class="line"><span class="built_in">cd</span> ..    <span class="comment"># 现在处于ubuntu-keyring-2012.05.19目录中</span></span><br><span class="line">dpkg-buildpackage -rfakeroot -m<span class="string">"Your Name &lt;your.email@your.host&gt;"</span> -k<span class="variable">$yourkeyid</span></span><br><span class="line"><span class="built_in">cd</span> ..  <span class="comment"># 现在处于$keybuild中</span></span><br><span class="line">cp ubuntu-keyring*deb <span class="variable">$imagepath</span>/pool/main/u/ubuntu-keyring</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>dpkg-buildpackage会去root下面寻找你的key，所以推荐这些过程以root账号运行。</li>
+</ul>
+<h2 id="4-生成新的filesystem-squashfs"><a href="#4-生成新的filesystem-squashfs" class="headerlink" title="4.生成新的filesystem.squashfs"></a>4.生成新的filesystem.squashfs</h2><p>解开filesystem.squashfs</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> <span class="variable">$imagepath</span></span><br><span class="line">unsquashfs install/filesystem.squashfs</span><br></pre></td></tr></table></figure>
+
+<p>这个时DIST在install目录下会出现squashfs-root目录<br>将你的kDISTy导入到相应的目录</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> <span class="variable">$imaDISTepath</span>/install/squashfs-root</span><br><span class="line">gpg --<span class="built_in">export</span> FBB75451 437D05B5 C0B21F32 EFE21092 <span class="variable">$yourkeyid</span> &gt; /usr/share/keyrings/ubuntu-archive-keyring.gpg </span><br><span class="line">gpg --<span class="built_in">export</span> FBB75451 437D05B5 C0B21F32 EFE21092 <span class="variable">$yourkeyid</span> &gt; /etc/apt/trusted.gpg </span><br><span class="line">gpg --<span class="built_in">export</span> FBB75451 437D05B5 C0B21F32 EFE21092 <span class="variable">$yourkeyid</span> &gt; /var/lib/apt/keyrings/ubuntu-archive-keyring.gpg</span><br></pre></td></tr></table></figure>
+
+<p>squashfs-root应该是相当于没有安装软件和配置的ubuntu系统文件，如果你需要对ubuntu进行一些个性化配置，可以对相应文件修改，比如修改squashfs-root下的/etc/apt/sources.list来更改源之类的操作。<br>配合上chroot也可以进行更加高级的操作</p>
+<p>修改完后将其大小记录到filesystem.size</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> <span class="variable">$imagepath</span>/install/squashfs-root</span><br><span class="line">du -sx --block-size=1 ./ | cut -f1 &gt; <span class="variable">$imagepath</span>/install/filesystem.size</span><br></pre></td></tr></table></figure>
+
+<p>重新打包</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rm extract-cd/casper/filesystem.squashfs</span><br><span class="line">mksquashfs edit extract-cd/casper/filesystem.squashfs -nolzma</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>-nolzma参数只适用于Hardy到Karmic版本。</li>
+<li>squashfs必须使用与您正在定制的CD上使用的内核兼容的mksquashfs版本生成。例如，您不能在karmic上生成jaunty的squashfs，因为jaunty内核无法挂载使用mksquashfs从karmic准备的squashfs。</li>
+</ul>
+<h2 id="5-使用apt-ftparchive来构建仓库"><a href="#5-使用apt-ftparchive来构建仓库" class="headerlink" title="5.使用apt-ftparchive来构建仓库"></a>5.使用apt-ftparchive来构建仓库</h2><p>获取indices文件</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir -p <span class="variable">$indicesDir</span> </span><br><span class="line"><span class="built_in">cd</span> <span class="variable">$indicesDir</span></span><br><span class="line">DIST=<span class="variable">$DIST</span></span><br><span class="line"><span class="keyword">for</span> SUFFIX <span class="keyword">in</span> extra.main main main.debian-installer restricted restricted.debian-installer; <span class="keyword">do</span></span><br><span class="line">  wget http://archive.ubuntu.com/ubuntu/indices/override.<span class="variable">$DIST</span>.<span class="variable">$SUFFIX</span></span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+
+<p>接下来在创建apt-ftparchive的配置文件<br>分别为apt-ftparchive-deb.conf, apt-ftparchive-udeb.conf, apt-ftparchive-extras.conf,和release.conf，放在$aptftparchiveconf目录下。</p>
+<p>这里给出相关的配置文件<br>apt-ftparchive-deb.conf</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Dir &#123;</span><br><span class="line">  ArchiveDir <span class="string">"<span class="variable">$imagepath</span>"</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">TreeDefault &#123;</span><br><span class="line">  Directory <span class="string">"pool/"</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">BinDirectory <span class="string">"pool/main"</span> &#123;</span><br><span class="line">  Packages <span class="string">"dists/<span class="variable">$DIST</span>/main/binary-amd64/Packages"</span>;</span><br><span class="line">  BinOverride <span class="string">"<span class="variable">$indicesDir</span>/override.<span class="variable">$DIST</span>.main"</span>;</span><br><span class="line">  ExtraOverride <span class="string">"<span class="variable">$indicesDir</span>/override.<span class="variable">$DIST</span>.extra.main"</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">BinDirectory <span class="string">"pool/restricted"</span> &#123;</span><br><span class="line"> Packages <span class="string">"dists/<span class="variable">$DIST</span>/restricted/binary-amd64/Packages"</span>;</span><br><span class="line"> BinOverride <span class="string">"<span class="variable">$indicesDir</span>/override.<span class="variable">$DIST</span>.restricted"</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Default &#123;</span><br><span class="line">  Packages &#123;</span><br><span class="line">    Extensions <span class="string">".deb"</span>;</span><br><span class="line">    Compress <span class="string">". gzip"</span>;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Contents &#123;</span><br><span class="line">  Compress <span class="string">"gzip"</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>apt-ftparchive-udeb.conf</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Dir &#123;</span><br><span class="line">  ArchiveDir <span class="string">"<span class="variable">$imagepath</span>"</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">TreeDefault &#123;</span><br><span class="line">  Directory <span class="string">"pool/"</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">BinDirectory <span class="string">"pool/main"</span> &#123;</span><br><span class="line">  Packages <span class="string">"dists/<span class="variable">$DIST</span>/main/debian-installer/binary-amd64/Packages"</span>;</span><br><span class="line">  BinOverride <span class="string">"<span class="variable">$indicesDir</span>/override.<span class="variable">$DIST</span>.main.debian-installer"</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">BinDirectory <span class="string">"pool/restricted"</span> &#123;</span><br><span class="line">  Packages <span class="string">"dists/<span class="variable">$DIST</span>/restricted/debian-installer/binary-amd64/Packages"</span>;</span><br><span class="line">  BinOverride <span class="string">"<span class="variable">$indicesDir</span>/override.<span class="variable">$DIST</span>.restricted.debian-installer"</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Default &#123;</span><br><span class="line">  Packages &#123;</span><br><span class="line">    Extensions <span class="string">".udeb"</span>;</span><br><span class="line">    Compress <span class="string">". gzip"</span>;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Contents &#123;</span><br><span class="line">  Compress <span class="string">"gzip"</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>apt-ftparchive-extras.conf</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Dir &#123;</span><br><span class="line">  ArchiveDir <span class="string">"<span class="variable">$imagepath</span>"</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">TreeDefault &#123;</span><br><span class="line">  Directory <span class="string">"pool/"</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">BinDirectory <span class="string">"pool/extras"</span> &#123;</span><br><span class="line">  Packages <span class="string">"dists/<span class="variable">$DIST</span>/extras/binary-amd64/Packages"</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Default &#123;</span><br><span class="line">  Packages &#123;</span><br><span class="line">    Extensions <span class="string">".deb"</span>;</span><br><span class="line">    Compress <span class="string">". gzip"</span>;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Contents &#123;</span><br><span class="line">  Compress <span class="string">"gzip"</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>release.conf</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">APT::FTPArchive::Release::Origin <span class="string">"Ubuntu"</span>;</span><br><span class="line">APT::FTPArchive::Release::Label <span class="string">"Ubuntu"</span>;</span><br><span class="line">APT::FTPArchive::Release::Suite <span class="string">"<span class="variable">$DIST</span>"</span>;</span><br><span class="line">APT::FTPArchive::Release::Version <span class="string">"<span class="variable">$version</span>"</span>;</span><br><span class="line">APT::FTPArchive::Release::Codename <span class="string">"<span class="variable">$DIST</span>"</span>;</span><br><span class="line">APT::FTPArchive::Release::Architectures <span class="string">"amd64"</span>;</span><br><span class="line">APT::FTPArchive::Release::Components <span class="string">"main restricted extras"</span>;</span><br><span class="line">APT::FTPArchive::Release::Description <span class="string">"xxxxxx"</span>;</span><br></pre></td></tr></table></figure>
+
+<p>创建包的引用</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> <span class="variable">$imagepath</span></span><br><span class="line">apt-ftparchive packages pool/extras &gt; dists/stable/extras/binary-amd64/Packages</span><br><span class="line">gzip -c dists/stable/extras/binary-amd64/Packages | tee dists/stable/extras/binary-amd64/Packages.gz &gt; /dev/null</span><br></pre></td></tr></table></figure>
+
+<p>开始构建仓库</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">APTCONF=<span class="variable">$aptftparchiveconf</span>/release.conf</span><br><span class="line">DIST=xenial</span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> <span class="variable">$imagepath</span></span><br><span class="line">apt-ftparchive -c <span class="variable">$APTCONF</span> generate /opt/apt-ftparchive/apt-ftparchive-deb.conf</span><br><span class="line">apt-ftparchive -c <span class="variable">$APTCONF</span> generate /opt/apt-ftparchive/apt-ftparchive-udeb.conf</span><br><span class="line">apt-ftparchive -c <span class="variable">$APTCONF</span> generate /opt/apt-ftparchive/apt-ftparchive-extras.conf</span><br><span class="line">apt-ftparchive -c <span class="variable">$APTCONF</span> release <span class="variable">$imagepath</span>/dists/<span class="variable">$DIST</span> &gt; <span class="variable">$imagepath</span>/dists/<span class="variable">$DIST</span>/Release</span><br></pre></td></tr></table></figure>
+
+<p>对release文件签名</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> <span class="variable">$imagepath</span></span><br><span class="line">gpg --default-key <span class="variable">$yourkeyid</span> --output <span class="variable">$imagepath</span>/dists/<span class="variable">$DIST</span>/Release.gpg -ba <span class="variable">$imagepath</span>/dists/<span class="variable">$DIST</span>/Release</span><br></pre></td></tr></table></figure>
+
+<h2 id="6-编辑seed文件来安装"><a href="#6-编辑seed文件来安装" class="headerlink" title="6.编辑seed文件来安装"></a>6.编辑seed文件来安装</h2><p>生成的iso似乎不会安装extras里面的软件，这里给出一个修补的办法，修改preseed目录下的seed文件。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">chmod +w  <span class="variable">$iamgepath</span>/preseed/*.seed</span><br><span class="line"><span class="keyword">for</span> seed <span class="keyword">in</span> <span class="variable">$iamgepath</span>/preseed/*.seed; <span class="keyword">do</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">"d-i preseed/late_command string apt-install <span class="variable">$packgename</span>"</span> &gt;&gt; <span class="variable">$seed</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line">chmod -w  <span class="variable">$iamgepath</span>/preseed/*.seed</span><br></pre></td></tr></table></figure>
+
+<p>*软件名字似乎都是小写若安装不成功，可以在安装界面按下alt+F2进入shell脚本界面，通过以下命令来查询你的软件包的名字。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">apt-cache search package_name</span><br></pre></td></tr></table></figure>
+
+<h2 id="7-生成iso"><a href="#7-生成iso" class="headerlink" title="7.生成iso"></a>7.生成iso</h2><p>对md5文件进行签名</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> <span class="variable">$imagepath</span></span><br><span class="line">find -<span class="built_in">type</span> f -print0 | sudo xargs -0 md5sum | grep -v isolinux/ | grep -v md5sum  |sudo tee md5sum.txt</span><br></pre></td></tr></table></figure>
+
+<p>-b 和 -c指定的路径都是相对于$imagepath来说的，最终会$imagepath下生成iso。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">IMAGE=custom.iso</span><br><span class="line"></span><br><span class="line">mkisofs -r -V <span class="string">"Custom Ubuntu Install CD"</span> \</span><br><span class="line">            -cache-inodes \</span><br><span class="line">            -J -l -b isolinux/isolinux.bin \</span><br><span class="line">            -c isolinux/boot.cat -no-emul-boot \</span><br><span class="line">            -boot-load-size 4 -boot-info-table \</span><br><span class="line">            -o <span class="variable">$IMAGE</span> <span class="variable">$imagepath</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h2><h3 id="A-镜像安装时如何调试"><a href="#A-镜像安装时如何调试" class="headerlink" title="A.镜像安装时如何调试"></a>A.镜像安装时如何调试</h3><p>alt+F1 可以进入可视化界面，也就是正常的Ubuntu安装界面。<br>alt+F2 进入交互式shell界面，此时在isolinux内，可以通过chroot /target来进入正在安装的Ubuntu系统。<br>alt+F4 查看日志，基本知道是哪个地方安装不成功。</p>
+<h3 id="B-ubuntu版本以及名称对应"><a href="#B-ubuntu版本以及名称对应" class="headerlink" title="B.ubuntu版本以及名称对应"></a>B.ubuntu版本以及名称对应</h3><table>
+<thead>
+<tr>
+<th align="center">版本号</th>
+<th align="center">开发代号</th>
+<th align="center">内核版本</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">4.10</td>
+<td align="center">Warty Warthog</td>
+<td align="center">2.6.8</td>
+</tr>
+<tr>
+<td align="center">5.04</td>
+<td align="center">Hoary Hedgehog</td>
+<td align="center">2.6.10</td>
+</tr>
+<tr>
+<td align="center">5.10</td>
+<td align="center">Breezy Badger</td>
+<td align="center">2.6.12</td>
+</tr>
+<tr>
+<td align="center">6.06LTS</td>
+<td align="center">Dapper Drake</td>
+<td align="center">2.6.15</td>
+</tr>
+<tr>
+<td align="center">6.10</td>
+<td align="center">Edgy Eft</td>
+<td align="center">2.6.17</td>
+</tr>
+<tr>
+<td align="center">7.04</td>
+<td align="center">Feisty Fawn</td>
+<td align="center">2.6.20</td>
+</tr>
+<tr>
+<td align="center">7.10</td>
+<td align="center">Gutsy Gibbon</td>
+<td align="center">2.6.22</td>
+</tr>
+<tr>
+<td align="center">8.04LTS</td>
+<td align="center">Hardy Heron</td>
+<td align="center">2.6.24</td>
+</tr>
+<tr>
+<td align="center">8.10</td>
+<td align="center">Intrepid Ibex</td>
+<td align="center">2.6.27</td>
+</tr>
+<tr>
+<td align="center">9.04</td>
+<td align="center">Jaunty Jackalope</td>
+<td align="center">2.6.28</td>
+</tr>
+<tr>
+<td align="center">9.10</td>
+<td align="center">Karmic Koala</td>
+<td align="center">2.6.31</td>
+</tr>
+<tr>
+<td align="center">10.04LTS</td>
+<td align="center">Lucid Lynx</td>
+<td align="center">2.6.32</td>
+</tr>
+<tr>
+<td align="center">10.10</td>
+<td align="center">Maverick Meerkat</td>
+<td align="center">2.6.35</td>
+</tr>
+<tr>
+<td align="center">11.04</td>
+<td align="center">Natty Narwhal</td>
+<td align="center">2.6.38</td>
+</tr>
+<tr>
+<td align="center">11.10</td>
+<td align="center">Oneiric Ocelot</td>
+<td align="center">3.0</td>
+</tr>
+<tr>
+<td align="center">12.04LTS</td>
+<td align="center">Precise Pangolin</td>
+<td align="center">3.2</td>
+</tr>
+<tr>
+<td align="center">12.10</td>
+<td align="center">Quantal Quetzal</td>
+<td align="center">3.5</td>
+</tr>
+<tr>
+<td align="center">13.04</td>
+<td align="center">Raring Ringtail</td>
+<td align="center">3.8</td>
+</tr>
+<tr>
+<td align="center">13.10</td>
+<td align="center">Saucy Salamander</td>
+<td align="center">3.11</td>
+</tr>
+<tr>
+<td align="center">14.04LTS</td>
+<td align="center">Trusty Tahr</td>
+<td align="center">3.13</td>
+</tr>
+<tr>
+<td align="center">14.10</td>
+<td align="center">Utopic Unicorn</td>
+<td align="center">3.16</td>
+</tr>
+<tr>
+<td align="center">15.04</td>
+<td align="center">Vivid Vervet</td>
+<td align="center">3.19</td>
+</tr>
+<tr>
+<td align="center">15.10</td>
+<td align="center">Wily Werewolf</td>
+<td align="center">4.2</td>
+</tr>
+<tr>
+<td align="center">16.04LTS</td>
+<td align="center">Xenial Xerus</td>
+<td align="center">4.4</td>
+</tr>
+<tr>
+<td align="center">16.10</td>
+<td align="center">Yakkety Yak</td>
+<td align="center">4.8</td>
+</tr>
+<tr>
+<td align="center">17.04</td>
+<td align="center">Zesty Zapus</td>
+<td align="center">4.10</td>
+</tr>
+<tr>
+<td align="center">17.10</td>
+<td align="center">Artful Aardvark</td>
+<td align="center">4.13</td>
+</tr>
+<tr>
+<td align="center">18.04LTS</td>
+<td align="center">Bionic Beaver</td>
+<td align="center">4.15</td>
+</tr>
+<tr>
+<td align="center">18.10</td>
+<td align="center">Cosmic Cuttlefish</td>
+<td align="center">4.18</td>
+</tr>
+<tr>
+<td align="center">19.04</td>
+<td align="center">Disco Dingo</td>
+<td align="center">5.0</td>
+</tr>
+<tr>
+<td align="center">19.10</td>
+<td align="center">Eoan Ermine</td>
+<td align="center">5.3</td>
+</tr>
+<tr>
+<td align="center"><a href="https://zh.wikipedia.org/wiki/Ubuntu发行版列表" target="_blank" rel="noopener">中文维基-Ubuntu发行版列表</a></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+</tbody></table>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>Ubuntu</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Ubuntu16.04 server 安装中的坑</title>
+    <url>/post/7d33fc70.html</url>
+    <content><![CDATA[<h2 id="1-安装busybox-initramfs错误"><a href="#1-安装busybox-initramfs错误" class="headerlink" title="1.安装busybox initramfs错误"></a>1.安装busybox initramfs错误</h2><p>1.如果你是用中文安装的会出现这个错误，需要用英文安装<br>2.在语言界面按下F6进选项，可以在下面看到一串参数行，把里面的quiet修改为all_generic_ide回车就可正常安装</p>
+<h2 id="2-安装grub-pc失败"><a href="#2-安装grub-pc失败" class="headerlink" title="2.安装grub-pc失败"></a>2.安装grub-pc失败</h2><p>可以按快捷键Alt+F4查看日志，如果是连接失败，说明源有问题，返回打开shell将/tartget/apt/sources.list中添加国内xenial源(根据你安装的版本来)，这里给出一个我找到的,应该能用</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">deb http://mirrors.aliyun.com/ubuntu/ xenial main restricted universe multiverse</span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ xenial main restricted universe multiverse</span><br></pre></td></tr></table></figure>
+
+<p>你可以执行以下指令测试或者直接安装：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">chroot /target</span><br><span class="line">apt-get update</span><br><span class="line">apt-get install grub-pc</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>Ubuntu</tag>
+        <tag>随手记录</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>deb包的制作</title>
+    <url>/post/b1d021eb.html</url>
+    <content><![CDATA[<h2 id="将自己的软件打包成deb包"><a href="#将自己的软件打包成deb包" class="headerlink" title="将自己的软件打包成deb包"></a>将自己的软件打包成deb包</h2><h3 id="1-deb包的构成"><a href="#1-deb包的构成" class="headerlink" title="1.deb包的构成"></a>1.deb包的构成</h3><ul>
+<li><p>数据包，你需要安装的程序数据;</p>
+</li>
+<li><p>安装信息及控制脚本包, 包含deb的安装说明，标识;</p>
+</li>
+<li><p>deb文件的一些二进制数据，包括文件头等信息。</p>
+</li>
+</ul>
+<h3 id="2-创建工作目录"><a href="#2-创建工作目录" class="headerlink" title="2.创建工作目录"></a>2.创建工作目录</h3><p>这里以~/work 为工作目录</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="variable">$mkdir</span> work</span><br><span class="line"><span class="variable">$cd</span> work</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-描述文件和控制脚本"><a href="#3-描述文件和控制脚本" class="headerlink" title="3.描述文件和控制脚本"></a>3.描述文件和控制脚本</h3><p>工作目录下的文件树如下</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.                                                       </span><br><span class="line">├── DEBIAN</span><br><span class="line">│   ├── control</span><br><span class="line">│   ├── preinst</span><br><span class="line">│   ├── postinst</span><br><span class="line">│   ├── prerm</span><br><span class="line">│   └── postrm</span><br><span class="line">└── 模拟根目录</span><br></pre></td></tr></table></figure>
+
+<p>control文件时程序的描述信息，剩下的四个文件时相关的控制脚本。</p>
+<table>
+<thead>
+<tr>
+<th align="center">文件</th>
+<th align="center">运行时机</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">preinst</td>
+<td align="center">解包数据包前运行的脚本</td>
+</tr>
+<tr>
+<td align="center">postinst</td>
+<td align="center">解包数据包后运行的脚本</td>
+</tr>
+<tr>
+<td align="center">prerm</td>
+<td align="center">卸载时，在删除文件前运行的脚本</td>
+</tr>
+<tr>
+<td align="center">postrm</td>
+<td align="center">删除文件后运行的脚本</td>
+</tr>
+</tbody></table>
+<p>四个控制脚本不是必须的，但是control文件是必须存在的。<br>这里给出一个control文件的例子</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Package: soft</span><br><span class="line">Version: 1.0.1</span><br><span class="line">Section: utils</span><br><span class="line">Priority: optional</span><br><span class="line">Architecture: i386</span><br><span class="line">Depends:</span><br><span class="line">Installed-Size: 512</span><br><span class="line">Maintainer: xxx@xxx.com</span><br><span class="line">Description: soft package</span><br></pre></td></tr></table></figure>
+
+<p>字段解释：</p>
+<table>
+<thead>
+<tr>
+<th align="left">字段</th>
+<th align="left">意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Package</td>
+<td align="left">指该软件包的名字。如果你的软件包名称有两个词，用一个连字符（-）把它们连起来。软件包的名称只能有小写的英文字母，数字以及”+”和”-“。</td>
+</tr>
+<tr>
+<td align="left">Version</td>
+<td align="left">显然是程序的版本。这里的值不包括连字符。</td>
+</tr>
+<tr>
+<td align="left">Section</td>
+<td align="left">列出了你的软件属于的类别，可能的值包括admin（管理），games（游戏），gnome，kde，mail（电子邮件），misc（杂项，miscellaneous），net（网络），sound（声音），text（文本），utils（实用工具）和web（万维网）。</td>
+</tr>
+<tr>
+<td align="left">Priority</td>
+<td align="left">声明这个包的优先级（大部分的时候使用optional（可选的））。</td>
+</tr>
+<tr>
+<td align="left">Architecture</td>
+<td align="left">是该程序可运行的CPU架构（可能的值为i386，amd64和powerpc，大小写敏感。</td>
+</tr>
+<tr>
+<td align="left">Eseential</td>
+<td align="left">指该软件包是否是必须的（大部分的时候不是）。</td>
+</tr>
+<tr>
+<td align="left">Depends</td>
+<td align="left">这个程序的依赖程序。</td>
+</tr>
+<tr>
+<td align="left">Recommends</td>
+<td align="left">推荐安装的程序，一般都要装。</td>
+</tr>
+<tr>
+<td align="left">Suggests</td>
+<td align="left">建议安装，可能给这个软件带来更多功能，但是不安装也行</td>
+</tr>
+<tr>
+<td align="left">Install-Size</td>
+<td align="left">程序安装后的大小，按KB算。</td>
+</tr>
+<tr>
+<td align="left">Maintainer</td>
+<td align="left">维护者（写上你的名字，后面的方括号”[ ]”里留下你的电子邮件地址）。</td>
+</tr>
+<tr>
+<td align="left">Conflicts</td>
+<td align="left">表示跟这个程序冲突的软件。</td>
+</tr>
+<tr>
+<td align="left">Replaces</td>
+<td align="left">表明哪些软件包将被这个程序取代。</td>
+</tr>
+<tr>
+<td align="left">Description</td>
+<td align="left">显示你的描述。</td>
+</tr>
+</tbody></table>
+<ul>
+<li>依赖包的表示<br>  用英文的半角逗号分开不同的依赖关系(,)。如果两个软件中的任何一个可以工作，用竖线”|”分开它们。你也可以指定特定的版本，用在括号里用&lt;&lt;（小于），&lt;=（小于或等于），=（等于），&gt;=（大于或等于），或&gt;&gt;（大于）来表示。</li>
+</ul>
+<h3 id="4-需要安装的文件"><a href="#4-需要安装的文件" class="headerlink" title="4.需要安装的文件"></a>4.需要安装的文件</h3><p>准备好描述文件和相关的脚本后，就可以将你的程序放在模拟根目录下。<br>比如有一个soft.out文件。<br>安装到/user/local/bin目录下，那么在work目录下创建user/local/bin。<br>把soft.out放到~/work/user/local/bin下。<br>这个就是模拟根目录的意义。</p>
+<p>文件放置妥当后的目录结构</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.</span><br><span class="line">├── DEBIAN</span><br><span class="line">│   └── control                                                              </span><br><span class="line">└── usr</span><br><span class="line">    └── local</span><br><span class="line">        └── bin</span><br><span class="line">            └── soft.out</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-打包"><a href="#5-打包" class="headerlink" title="5.打包"></a>5.打包</h3><p>在work目录下执行以下指令</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="variable">$dpkg</span> -b . ~/soft.deb</span><br></pre></td></tr></table></figure>
+
+<p>即可完成打包。</p>
+<h3 id="相关的dpkg命令"><a href="#相关的dpkg命令" class="headerlink" title="*相关的dpkg命令"></a>*相关的dpkg命令</h3><p>安装前查看包内数据</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="variable">$dpkg</span> -c debname</span><br></pre></td></tr></table></figure>
+
+<p>安装deb包</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="variable">$dpkg</span> -i debname</span><br></pre></td></tr></table></figure>
+
+<p>卸载deb包</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="variable">$dpkg</span> -r debname</span><br></pre></td></tr></table></figure>
+
+<p>查看某文件属于哪个包</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="variable">$dpkg</span> -S filename</span><br></pre></td></tr></table></figure>
+
+<p>释放数据到某个文件下</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="variable">$dpkg</span> -X debname dirname</span><br></pre></td></tr></table></figure>
+
+<p>释放控制信息到当前的DEBIAN目录下</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="variable">$dpkg</span> -e debname</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>Ubuntu</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>CVE-2019-14287复现</title>
     <url>/post/13cae37e.html</url>
     <content><![CDATA[<h2 id="1-CVE-2019-14287权限提升漏洞"><a href="#1-CVE-2019-14287权限提升漏洞" class="headerlink" title="1.CVE-2019-14287权限提升漏洞"></a>1.CVE-2019-14287权限提升漏洞</h2><p>2019年10月14日， sudo 官方在发布了 CVE-2019-14287 的漏洞预警。<br>sudo大家都熟悉，基本上所有 unix操作系统(BSD, MacOS, GNU/Linux) 都会集成的一个用户权限控制/切换程序。允许管理员控制服务器下用户能够切换的用户权限。<br>CVE-2019-14287 是管理员在配置文件中用了 ALL 关键词后造成的。但默认的 sudo 配置文件不受影响。</p>
@@ -55,8 +487,8 @@
         <category>安全漏洞</category>
       </categories>
       <tags>
-        <tag>linux</tag>
         <tag>安全</tag>
+        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
@@ -71,8 +503,8 @@
         <category>python</category>
       </categories>
       <tags>
-        <tag>python</tag>
         <tag>随手记录</tag>
+        <tag>python</tag>
       </tags>
   </entry>
   <entry>
@@ -105,9 +537,9 @@
         <category>安全漏洞</category>
       </categories>
       <tags>
-        <tag>安全</tag>
         <tag>windows</tag>
         <tag>rdp</tag>
+        <tag>安全</tag>
       </tags>
   </entry>
   <entry>
@@ -128,15 +560,18 @@
 
 <p>一般为第三项</p>
 <h2 id="相关利用方法"><a href="#相关利用方法" class="headerlink" title="相关利用方法"></a>相关利用方法</h2><p><a href="https://github.com/rapid7/metasploit-framework/pull/12283" target="_blank" rel="noopener">cve-2019-0708的POC和EXP</a></p>
+<ul>
+<li>新增<br><a href="https://github.com/coolboy4me/cve-2019-0708_bluekeep_rce" target="_blank" rel="noopener">xp的利用方法</a></li>
+</ul>
 <h2 id="后言"><a href="#后言" class="headerlink" title="后言"></a>后言</h2><p>下篇文章讲讲一下rdp协议的一些知识<br><a href="https://doasromansdo.github.io/post/1e6d0424.html#more" target="_blank" rel="noopener">rpd的连接过程</a></p>
 ]]></content>
       <categories>
         <category>安全漏洞</category>
       </categories>
       <tags>
-        <tag>安全</tag>
         <tag>windows</tag>
         <tag>rdp</tag>
+        <tag>安全</tag>
       </tags>
   </entry>
   <entry>
