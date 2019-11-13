@@ -1,6 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>在Debian安装镜像中添加软件包</title>
+    <url>/post/5092e38f.html</url>
+    <content><![CDATA[<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>本教程是在ubuntu16.04 desktop amd64上进行编辑。<br>镜像为debian-10.1.0-amd64-xfce-CD-1。<br>上一个教程根据Ubuntu wiki上的定制iso方法一步一步制作的，这次我将尽量简化步骤，以及补充相关的说明。</p>
+<p>参考地址：<br><a href="https://wiki.debian.org/DebianInstaller/Modify/CD" target="_blank" rel="noopener">debian wiki-modify CD</a><br><a href="https://wiki.debian.org/DebianCustomCD" target="_blank" rel="noopener">debian wiki-customCD</a><br><a href="https://wiki.debian.org/DebianInstaller/Preseed#Default_preseed_files" target="_blank" rel="noopener">debianinstaller preseed</a><br><a href="https://wiki.debian.org/DebianInstaller/Preseed/EditIso" target="_blank" rel="noopener">preseeding the installer from its initrd</a></p>
+<h2 id="1-解压镜像"><a href="#1-解压镜像" class="headerlink" title="1.解压镜像"></a>1.解压镜像</h2><p>和Ubuntu的一致<br>挂载镜像</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mount -o loop <span class="variable">$isopath</span> <span class="variable">$mountpoint</span></span><br></pre></td></tr></table></figure>
+
+<p>使用rsync复制文件到硬盘</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rsync -av <span class="variable">$mountpoint</span> <span class="variable">$imagepath</span></span><br></pre></td></tr></table></figure>
+
+<p>或者直接使用cp命令拷贝</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir -p <span class="variable">$imagepath</span></span><br><span class="line">cp -a <span class="variable">$mountpoint</span> <span class="variable">$imagepath</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="2-添加deb包"><a href="#2-添加deb包" class="headerlink" title="2.添加deb包"></a>2.添加deb包</h2><p>这次我懒得创建extras组件了，直接把deb放到pool/main相应的文件夹下，为了美观以及减少出现不可预知的bug，我采取了和其它deb包相同的结构，比如我的软件以字母s开头，就放在了pool/main/s/软件名/下面。</p>
+<h2 id="3-重新生成Pakages和Release文件"><a href="#3-重新生成Pakages和Release文件" class="headerlink" title="3.重新生成Pakages和Release文件"></a>3.重新生成Pakages和Release文件</h2><p>从网上下载indices似乎是没有必要的，我只在main仓库下添加了包，因此只需要修改相应的文件就行，手动修改太麻烦，这里使用apt-ftparchive。配置文件如下</p>
+<p>apt-ftparchive-deb.conf</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Dir &#123;</span><br><span class="line">  ArchiveDir <span class="string">"<span class="variable">$imagepath</span>"</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">TreeDefault &#123;</span><br><span class="line">  Directory <span class="string">"pool/"</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">BinDirectory <span class="string">"pool/main"</span> &#123;</span><br><span class="line">  Packages <span class="string">"dists/<span class="variable">$DIST</span>/main/binary-amd64/Packages"</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">BinDirectory <span class="string">"pool/contrib"</span> &#123;</span><br><span class="line"> Packages <span class="string">"dists/<span class="variable">$DIST</span>/contrib/binary-amd64/Packages"</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Default &#123;</span><br><span class="line">  Packages &#123;</span><br><span class="line">    Extensions <span class="string">".deb"</span>;</span><br><span class="line">    Compress <span class="string">". gzip"</span>;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Contents &#123;</span><br><span class="line">  Compress <span class="string">"gzip"</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>release .conf</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">APT::FTPArchive::Release::Codename <span class="string">"<span class="variable">$DIST</span>"</span>;</span><br><span class="line">APT::FTPArchive::Release::Origin <span class="string">"Debian"</span>;</span><br><span class="line">APT::FTPArchive::Release::Components <span class="string">"main"</span>;</span><br><span class="line">APT::FTPArchive::Release::Label <span class="string">"Debian"</span>;</span><br><span class="line">APT::FTPArchive::Release::Architectures <span class="string">"amd64"</span>;</span><br><span class="line">APT::FTPArchive::Release::Suite <span class="string">"testing"</span>;</span><br></pre></td></tr></table></figure>
+
+<p>先构建Package</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">apt-ftparchive generate apt-ftparchive-deb.conf</span><br></pre></td></tr></table></figure>
+
+<p>这个时候会扫描pool/mian下面的软件包然后将信息写入dists/$DIST/main/binary-amd64/Packages<br>在apt-ftparchive-deb.conf配置中体现</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">BinDirectory <span class="string">"pool/main"</span> &#123;</span><br><span class="line">  Packages <span class="string">"dists/<span class="variable">$DIST</span>/main/binary-amd64/Packages"</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>Packages内保存了deb的信息（也就是deb包构建时，control里面的信息）、deb包的位置、deb包的大小以及md5之类验证值。</p>
+<p>生成Release文件</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">apt-ftparchive release <span class="variable">$imagepath</span>/dists/<span class="variable">$DIST</span> &gt;&gt; <span class="variable">$imagepath</span>/dists/<span class="variable">$DIST</span>/Release</span><br></pre></td></tr></table></figure>
+
+<p>Release文件比较简单，就是一些描述文件，和Pakage文件以及翻译文件的位置和md5之类的验证信息（有MD5、sha1、sha256、sha512）。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Architectures: amd64</span><br><span class="line">Codename: buster</span><br><span class="line">Components: main</span><br><span class="line">Date: Tue, 12 Nov 2019 09:09:47 UTC</span><br><span class="line">Label: Debian</span><br><span class="line">Origin: Debian</span><br><span class="line">Suite: testing</span><br><span class="line">MD5Sum:</span><br><span class="line"> b5529ca7f3228f4c06507cc9becfaf7a              135 Release</span><br><span class="line"> d41d8cd98f00b204e9800998ecf8427e                0 contrib/binary-amd64/Packages</span><br><span class="line"> e62ff0123a74adfc6903d59a449cbdb0               40 contrib/binary-amd64/Packages.gz</span><br><span class="line"> e5e5d8f8688a49f7836b62b0f605b694              119 contrib/binary-amd64/Release</span><br><span class="line"> 040f7f5196ce62a26b596e10fe0c924e          1246183 main/binary-amd64/Packages</span><br><span class="line"> fb9b1a586d9c0e6f639ffee5e186fbc4           414562 main/binary-amd64/Packages.gz</span><br><span class="line"> dd30475d155e4b1beab9c1b8d7d1d703              116 main/binary-amd64/Release</span><br><span class="line"> 600f266567b08466e6c2e46f6f2a4856            40987 main/debian-installer/binary-amd64/Packages.gz</span><br><span class="line"> dd30475d155e4b1beab9c1b8d7d1d703              116 main/debian-installer/binary-amd64/Release</span><br><span class="line"> 4e0f08499f56c7a4da3ef2a02749d657             2950 main/i18n/Translation-ca.gz</span><br><span class="line"> b19a6ca7c0521247707371291a5d7a04            47191 main/i18n/Translation-cs.gz</span><br><span class="line">...<span class="comment">#下面的就不放出来了</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="4-添加preseed-cfg"><a href="#4-添加preseed-cfg" class="headerlink" title="4.添加preseed.cfg"></a>4.添加preseed.cfg</h2><p>按照我的想法都已经放入了mian里面了，还把信息写入了Package，应该会自动安装，但是并没有，看来安装系统在其他地方自己维护了一个安装列表，当然我们可以找找修改initrd的方法，但是debian-installer提供了preseed的机制我们就使用这个吧。</p>
+<p>我们可以看到Debian的目录下并没有Ubuntu一样的preseed文件夹。<br>debian和Ubuntu目录展示</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#debian</span></span><br><span class="line">.</span><br><span class="line">├── autorun.inf</span><br><span class="line">├── boot</span><br><span class="line">├── css</span><br><span class="line">├── debian -&gt; .</span><br><span class="line">├── dists</span><br><span class="line">├── doc</span><br><span class="line">├── EFI</span><br><span class="line">├── firmware</span><br><span class="line">├── g2ldr</span><br><span class="line">├── g2ldr.mbr</span><br><span class="line">├── install</span><br><span class="line">├── install.amd</span><br><span class="line">├── isolinux</span><br><span class="line">├── md5sum.txt</span><br><span class="line">├── pics</span><br><span class="line">├── pool</span><br><span class="line">├── README.html</span><br><span class="line">├── README.mirrors.html</span><br><span class="line">├── README.mirrors.txt</span><br><span class="line">├── README.source</span><br><span class="line">├── README.txt</span><br><span class="line">├── setup.exe</span><br><span class="line">├── tools</span><br><span class="line">└── win32-loader.ini</span><br><span class="line"></span><br><span class="line"><span class="comment">#Ubuntu</span></span><br><span class="line">.</span><br><span class="line">├── boot</span><br><span class="line">├── dists</span><br><span class="line">├── doc</span><br><span class="line">├── EFI</span><br><span class="line">├── install</span><br><span class="line">├── isolinux</span><br><span class="line">├── md5sum.txt</span><br><span class="line">├── pics</span><br><span class="line">├── pool</span><br><span class="line">├── preseed</span><br><span class="line">├── README.diskdefines</span><br><span class="line">└── ubuntu -&gt; .</span><br></pre></td></tr></table></figure>
+
+<p>如何确定pressed其实是在isoliuux目录下的cfg文件确定，cfg间相互引用全弄明白其实挺麻烦的，这里我给出我找到的cfg文件，就是isolinux/txt.cfg<br>cfg文件对比</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#debian</span></span><br><span class="line">label install</span><br><span class="line">	menu label ^Install</span><br><span class="line">	kernel /install.amd/vmlinuz</span><br><span class="line">	append desktop=xfce vga=788 initrd=/install.amd/initrd.gz --- quiet </span><br><span class="line"></span><br><span class="line"><span class="comment">#ubuntu</span></span><br><span class="line">default install</span><br><span class="line">label install</span><br><span class="line">  menu label ^Install Ubuntu Server</span><br><span class="line">  kernel /install/vmlinuz</span><br><span class="line">  append  file=/cdrom/preseed/ubuntu-server.seed vga=788 initrd=/install/initrd.gz quiet ---</span><br><span class="line">label hwe-install</span><br><span class="line">  menu label ^Install Ubuntu Server with the HWE kernel</span><br><span class="line">  kernel /install/hwe-vmlinuz</span><br><span class="line">  append  file=/cdrom/preseed/hwe-ubuntu-server.seed vga=788 initrd=/install/hwe-initrd.gz quiet ---</span><br><span class="line">label maas</span><br><span class="line">  menu label ^Install MAAS Region Controller</span><br><span class="line">  kernel /install/vmlinuz</span><br><span class="line">  append   modules=maas-region-udeb vga=788 initrd=/install/initrd.gz quiet ---</span><br><span class="line"></span><br><span class="line">label maasrack</span><br><span class="line">  menu label ^Install MAAS Rack Controller</span><br><span class="line">  kernel /install/vmlinuz</span><br><span class="line">  append   modules=maas-rack-udeb vga=788 initrd=/install/initrd.gz quiet ---</span><br><span class="line">label check</span><br><span class="line">  menu label ^Check disc <span class="keyword">for</span> defects</span><br><span class="line">  kernel /install/vmlinuz</span><br><span class="line">  append   MENU=/bin/cdrom-checker-menu vga=788 initrd=/install/initrd.gz quiet ---</span><br><span class="line">label memtest</span><br><span class="line">  menu label Test ^memory</span><br><span class="line">  kernel /install/mt86plus</span><br><span class="line">label hd</span><br><span class="line">  menu label ^Boot from first hard disk</span><br><span class="line">  localboot 0x80</span><br></pre></td></tr></table></figure>
+
+<p>这里可以看到Ubuntu的append字段里面指明了preseed的位置file=/cdrom/preseed/ubuntu-server.seed，因此我们在debian的append中加入file=/cdrom/pressd.cfg然后将命令写入即可。</p>
+<ul>
+<li>这里使用preseed.cfg而不采用preseed/xxxx.seed是因为我在debian wiki上看到他们都采用preseed.cfg的命名，入乡随俗。</li>
+</ul>
+<p>这里其实只相当于完成了一半，可以看到ubuntu的txt.cfg比debian的怎么多了这么多，debian这只有install，还有图形的install和一些check之类的配置呢？</p>
+<p>debian的isolinux目录下仔细查找可以找到gtk.cfg，其内容如下</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">default installgui</span><br><span class="line">label installgui</span><br><span class="line">	menu label ^Graphical install</span><br><span class="line">	menu default</span><br><span class="line">	kernel /install.amd/vmlinuz</span><br><span class="line">	append desktop=xfce vga=788 initrd=/install.amd/gtk/initrd.gz --- quiet</span><br></pre></td></tr></table></figure>
+
+<p>没错从名字可以看出，这个就是带界面安装系统的配置文件，在这里我们也需要将preseed文件的位置加上。</p>
+<p>在Ubuntu中我们采用的是将</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">d-i preseed/late_command string apt-install <span class="variable">$packgename</span></span><br></pre></td></tr></table></figure>
+
+<p>写入到seed文件底部，这个的意思是在安装的最后阶段执行package的安装，看起来不太优雅。<br>这里我给出一种新的写法<br>preseed.cfg：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">d-i pkgsel/include string <span class="variable">$packgename</span></span><br></pre></td></tr></table></figure>
+
+<p>这个是在安装完系统默认的软件包后，安装你的软件包（执行阶段为select and install package）</p>
+<h2 id="5-生成iso"><a href="#5-生成iso" class="headerlink" title="5.生成iso"></a>5.生成iso</h2><p>这里和Ubuntu一样<br>对md5文件进行签名</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> <span class="variable">$imagepath</span></span><br><span class="line">find -<span class="built_in">type</span> f -print0 | sudo xargs -0 md5sum | grep -v isolinux/ | grep -v md5sum  |sudo tee md5sum.txt</span><br></pre></td></tr></table></figure>
+
+<p>-b 和 -c指定的路径都是相对于$imagepath来说的，最终会$imagepath下生成iso。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">IMAGE=custom.iso</span><br><span class="line"></span><br><span class="line">mkisofs -r -V <span class="string">"Custom Ubuntu Install CD"</span> \</span><br><span class="line">            -cache-inodes \</span><br><span class="line">            -J -l -b isolinux/isolinux.bin \</span><br><span class="line">            -c isolinux/boot.cat -no-emul-boot \</span><br><span class="line">            -boot-load-size 4 -boot-info-table \</span><br><span class="line">            -o <span class="variable">$IMAGE</span> <span class="variable">$imagepath</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="6-其他附加preseed的方法"><a href="#6-其他附加preseed的方法" class="headerlink" title="6.其他附加preseed的方法"></a>6.其他附加preseed的方法</h2><p>由于iso会提供多种安装方式，因此往每个安装方式指定preseed有点麻烦，在debian的wiki上给出了三种方式。</p>
+<ul>
+<li>将preseed.cfg附加到initrd</li>
+<li>指定preseed.cfg的位置（上面使用的方法）</li>
+<li>从网上下载preseed.cfg</li>
+</ul>
+<p>下载preseed有点麻烦，需要搭建提供下载的服务器，这里就不再展开了。<br>重点讲讲第一种方法。<br>debian镜像文件中有一个install.amd的目录，我们就使用这个目录.<br>这里给出脚本</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">isopath=~/debianiso</span><br><span class="line">chmod +w -R $isopath/install.amd/</span><br><span class="line">pushd $isopath/install.amd</span><br><span class="line">cat &gt; preseed.cfg &lt;&lt; EOF#生成preseed.cfg文件</span><br><span class="line">d-i pkgsel/include string secagent</span><br><span class="line">EOF</span><br><span class="line">#查找所有的initrd.gz</span><br><span class="line">for initrd in $(find $isopath/install.amd/ -name initrd.gz);do</span><br><span class="line">        gzip -d $initrd</span><br><span class="line">        echo preseed.cfg | cpio -H newc -o -A -F $(dirname $initrd)/initrd#将preseed.cfg附加上去</span><br><span class="line">        gzip $(dirname $initrd)/initrd</span><br><span class="line">done</span><br><span class="line">rm -f preseed.cfg</span><br><span class="line">chmod -w -R $isopath/install.amd/</span><br><span class="line">popd</span><br></pre></td></tr></table></figure>
+
+<h2 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h2><p>如果你对于preseed文件有兴趣<br>这里给出Ubuntu的preseed示例文件,你也可以在Ubunut的镜像下找到（目录doc\install\manual\example-preseed.txt.gz）<br>太长懒得放上来了，自己解压镜像去找吧。</p>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>Debian</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>在Ubuntu安装镜像中添加软件包</title>
     <url>/post/6a6ee787.html</url>
     <content><![CDATA[<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>本教程是在ubuntu16.04 desktop amd64上进行编辑。<br>镜像为ubuntu16.04 server amd64。<br>参考地址：<br><a href="https://help.ubuntu.com/community/InstallCDCustomization?action=show&redirect=InstallCDCustomizationHowTo" target="_blank" rel="noopener">InstallCDCustomization</a><br><a href="https://help.ubuntu.com/community/LiveCDCustomization" target="_blank" rel="noopener">LiveCDCustomization</a><br><a href="https://wiki.ubuntu.com/定制Ubuntu安装CD" target="_blank" rel="noopener">定制Ubuntu安装CD</a></p>
@@ -78,7 +161,7 @@
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> <span class="variable">$imagepath</span></span><br><span class="line">gpg --default-key <span class="variable">$yourkeyid</span> --output <span class="variable">$imagepath</span>/dists/<span class="variable">$DIST</span>/Release.gpg -ba <span class="variable">$imagepath</span>/dists/<span class="variable">$DIST</span>/Release</span><br></pre></td></tr></table></figure>
 
 <h2 id="6-编辑seed文件来安装"><a href="#6-编辑seed文件来安装" class="headerlink" title="6.编辑seed文件来安装"></a>6.编辑seed文件来安装</h2><p>生成的iso似乎不会安装extras里面的软件，这里给出一个修补的办法，修改preseed目录下的seed文件。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">chmod +w  <span class="variable">$iamgepath</span>/preseed/*.seed</span><br><span class="line"><span class="keyword">for</span> seed <span class="keyword">in</span> <span class="variable">$iamgepath</span>/preseed/*.seed; <span class="keyword">do</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">"d-i preseed/late_command string apt-install <span class="variable">$packgename</span>"</span> &gt;&gt; <span class="variable">$seed</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line">chmod -w  <span class="variable">$iamgepath</span>/preseed/*.seed</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">chmod +w  <span class="variable">$iamgepath</span>/preseed/*.seed</span><br><span class="line"><span class="keyword">for</span> seed <span class="keyword">in</span> <span class="variable">$iamgepath</span>/preseed/*.seed; <span class="keyword">do</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">"d-i preseed/late_command string apt-install <span class="variable">$packagename</span>"</span> &gt;&gt; <span class="variable">$seed</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line">chmod -w  <span class="variable">$iamgepath</span>/preseed/*.seed</span><br></pre></td></tr></table></figure>
 
 <p>*软件名字似乎都是小写若安装不成功，可以在安装界面按下alt+F2进入shell脚本界面，通过以下命令来查询你的软件包的名字。</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">apt-cache search package_name</span><br></pre></td></tr></table></figure>
@@ -89,6 +172,7 @@
 <p>-b 和 -c指定的路径都是相对于$imagepath来说的，最终会$imagepath下生成iso。</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">IMAGE=custom.iso</span><br><span class="line"></span><br><span class="line">mkisofs -r -V <span class="string">"Custom Ubuntu Install CD"</span> \</span><br><span class="line">            -cache-inodes \</span><br><span class="line">            -J -l -b isolinux/isolinux.bin \</span><br><span class="line">            -c isolinux/boot.cat -no-emul-boot \</span><br><span class="line">            -boot-load-size 4 -boot-info-table \</span><br><span class="line">            -o <span class="variable">$IMAGE</span> <span class="variable">$imagepath</span></span><br></pre></td></tr></table></figure>
 
+<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>这个教程只是我跟着wiki上的教程一步一步做的，有许多步骤应该是没必要的，下一节定制debian的系统，其中会有更简洁的方法。可以先按照debian的方法试试，如果通不过再看看Ubuntu的，选择一些步骤添加上。<br><a href="https://doasromansdo.github.io/post/5092e38f.html#more" target="_blank" rel="noopener">在Debian安装镜像中添加软件包</a></p>
 <h2 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h2><h3 id="A-镜像安装时如何调试"><a href="#A-镜像安装时如何调试" class="headerlink" title="A.镜像安装时如何调试"></a>A.镜像安装时如何调试</h3><p>alt+F1 可以进入可视化界面，也就是正常的Ubuntu安装界面。<br>alt+F2 进入交互式shell界面，此时在isolinux内，可以通过chroot /target来进入正在安装的Ubuntu系统。<br>alt+F4 查看日志，基本知道是哪个地方安装不成功。</p>
 <h3 id="B-ubuntu版本以及名称对应"><a href="#B-ubuntu版本以及名称对应" class="headerlink" title="B.ubuntu版本以及名称对应"></a>B.ubuntu版本以及名称对应</h3><table>
 <thead>
@@ -404,7 +488,7 @@
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.</span><br><span class="line">├── DEBIAN</span><br><span class="line">│   └── control                                                              </span><br><span class="line">└── usr</span><br><span class="line">    └── local</span><br><span class="line">        └── bin</span><br><span class="line">            └── soft.out</span><br></pre></td></tr></table></figure>
 
 <h3 id="5-打包"><a href="#5-打包" class="headerlink" title="5.打包"></a>5.打包</h3><p>在work目录下执行以下指令</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="variable">$dpkg</span> -b . ~/soft.deb</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="variable">$dpkg</span> -b ./ ~/soft.deb</span><br></pre></td></tr></table></figure>
 
 <p>即可完成打包。</p>
 <h3 id="相关的dpkg命令"><a href="#相关的dpkg命令" class="headerlink" title="*相关的dpkg命令"></a>*相关的dpkg命令</h3><p>安装前查看包内数据</p>

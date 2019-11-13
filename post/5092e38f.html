@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="linux,Debian,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="简介本教程是在ubuntu16.04 desktop amd64上进行编辑。镜像为debian-10.1.0-amd64-xfce-CD-1。上一个教程根据Ubuntu wiki上的定制iso方法一步一步制作的，这次我将尽量简化步骤，以及补充相关的说明。 参考地址：debian wiki-modify CDdebian wiki-customCDdebianinstaller preseedpre">
+<meta name="keywords" content="linux,Debian">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在Debian安装镜像中添加软件包">
+<meta property="og:url" content="http://yoursite.com/post/5092e38f.html">
+<meta property="og:site_name" content="Roman&#39;s blog">
+<meta property="og:description" content="简介本教程是在ubuntu16.04 desktop amd64上进行编辑。镜像为debian-10.1.0-amd64-xfce-CD-1。上一个教程根据Ubuntu wiki上的定制iso方法一步一步制作的，这次我将尽量简化步骤，以及补充相关的说明。 参考地址：debian wiki-modify CDdebian wiki-customCDdebianinstaller preseedpre">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-11-13T08:09:34.463Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="在Debian安装镜像中添加软件包">
+<meta name="twitter:description" content="简介本教程是在ubuntu16.04 desktop amd64上进行编辑。镜像为debian-10.1.0-amd64-xfce-CD-1。上一个教程根据Ubuntu wiki上的定制iso方法一步一步制作的，这次我将尽量简化步骤，以及补充相关的说明。 参考地址：debian wiki-modify CDdebian wiki-customCDdebianinstaller preseedpre">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/post/5092e38f.html">
+
+
+
+
+
+  <title>在Debian安装镜像中添加软件包 | Roman's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Roman's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/post/5092e38f.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Roman">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Roman's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">在Debian安装镜像中添加软件包</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-11-13T16:09:12+08:00">
+                2019-11-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>本教程是在ubuntu16.04 desktop amd64上进行编辑。<br>镜像为debian-10.1.0-amd64-xfce-CD-1。<br>上一个教程根据Ubuntu wiki上的定制iso方法一步一步制作的，这次我将尽量简化步骤，以及补充相关的说明。</p>
+<p>参考地址：<br><a href="https://wiki.debian.org/DebianInstaller/Modify/CD" target="_blank" rel="noopener">debian wiki-modify CD</a><br><a href="https://wiki.debian.org/DebianCustomCD" target="_blank" rel="noopener">debian wiki-customCD</a><br><a href="https://wiki.debian.org/DebianInstaller/Preseed#Default_preseed_files" target="_blank" rel="noopener">debianinstaller preseed</a><br><a href="https://wiki.debian.org/DebianInstaller/Preseed/EditIso" target="_blank" rel="noopener">preseeding the installer from its initrd</a></p>
+<h2 id="1-解压镜像"><a href="#1-解压镜像" class="headerlink" title="1.解压镜像"></a>1.解压镜像</h2><p>和Ubuntu的一致<br>挂载镜像</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mount -o loop <span class="variable">$isopath</span> <span class="variable">$mountpoint</span></span><br></pre></td></tr></table></figure>
+
+<p>使用rsync复制文件到硬盘</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rsync -av <span class="variable">$mountpoint</span> <span class="variable">$imagepath</span></span><br></pre></td></tr></table></figure>
+
+<p>或者直接使用cp命令拷贝</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p <span class="variable">$imagepath</span></span><br><span class="line">cp -a <span class="variable">$mountpoint</span> <span class="variable">$imagepath</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="2-添加deb包"><a href="#2-添加deb包" class="headerlink" title="2.添加deb包"></a>2.添加deb包</h2><p>这次我懒得创建extras组件了，直接把deb放到pool/main相应的文件夹下，为了美观以及减少出现不可预知的bug，我采取了和其它deb包相同的结构，比如我的软件以字母s开头，就放在了pool/main/s/软件名/下面。</p>
+<h2 id="3-重新生成Pakages和Release文件"><a href="#3-重新生成Pakages和Release文件" class="headerlink" title="3.重新生成Pakages和Release文件"></a>3.重新生成Pakages和Release文件</h2><p>从网上下载indices似乎是没有必要的，我只在main仓库下添加了包，因此只需要修改相应的文件就行，手动修改太麻烦，这里使用apt-ftparchive。配置文件如下</p>
+<p>apt-ftparchive-deb.conf</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">Dir &#123;</span><br><span class="line">  ArchiveDir <span class="string">"<span class="variable">$imagepath</span>"</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">TreeDefault &#123;</span><br><span class="line">  Directory <span class="string">"pool/"</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">BinDirectory <span class="string">"pool/main"</span> &#123;</span><br><span class="line">  Packages <span class="string">"dists/<span class="variable">$DIST</span>/main/binary-amd64/Packages"</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">BinDirectory <span class="string">"pool/contrib"</span> &#123;</span><br><span class="line"> Packages <span class="string">"dists/<span class="variable">$DIST</span>/contrib/binary-amd64/Packages"</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Default &#123;</span><br><span class="line">  Packages &#123;</span><br><span class="line">    Extensions <span class="string">".deb"</span>;</span><br><span class="line">    Compress <span class="string">". gzip"</span>;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Contents &#123;</span><br><span class="line">  Compress <span class="string">"gzip"</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>release .conf</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">APT::FTPArchive::Release::Codename <span class="string">"<span class="variable">$DIST</span>"</span>;</span><br><span class="line">APT::FTPArchive::Release::Origin <span class="string">"Debian"</span>;</span><br><span class="line">APT::FTPArchive::Release::Components <span class="string">"main"</span>;</span><br><span class="line">APT::FTPArchive::Release::Label <span class="string">"Debian"</span>;</span><br><span class="line">APT::FTPArchive::Release::Architectures <span class="string">"amd64"</span>;</span><br><span class="line">APT::FTPArchive::Release::Suite <span class="string">"testing"</span>;</span><br></pre></td></tr></table></figure>
+
+<p>先构建Package</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt-ftparchive generate apt-ftparchive-deb.conf</span><br></pre></td></tr></table></figure>
+
+<p>这个时候会扫描pool/mian下面的软件包然后将信息写入dists/$DIST/main/binary-amd64/Packages<br>在apt-ftparchive-deb.conf配置中体现</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">BinDirectory <span class="string">"pool/main"</span> &#123;</span><br><span class="line">  Packages <span class="string">"dists/<span class="variable">$DIST</span>/main/binary-amd64/Packages"</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>Packages内保存了deb的信息（也就是deb包构建时，control里面的信息）、deb包的位置、deb包的大小以及md5之类验证值。</p>
+<p>生成Release文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt-ftparchive release <span class="variable">$imagepath</span>/dists/<span class="variable">$DIST</span> &gt;&gt; <span class="variable">$imagepath</span>/dists/<span class="variable">$DIST</span>/Release</span><br></pre></td></tr></table></figure>
+
+<p>Release文件比较简单，就是一些描述文件，和Pakage文件以及翻译文件的位置和md5之类的验证信息（有MD5、sha1、sha256、sha512）。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">Architectures: amd64</span><br><span class="line">Codename: buster</span><br><span class="line">Components: main</span><br><span class="line">Date: Tue, 12 Nov 2019 09:09:47 UTC</span><br><span class="line">Label: Debian</span><br><span class="line">Origin: Debian</span><br><span class="line">Suite: testing</span><br><span class="line">MD5Sum:</span><br><span class="line"> b5529ca7f3228f4c06507cc9becfaf7a              135 Release</span><br><span class="line"> d41d8cd98f00b204e9800998ecf8427e                0 contrib/binary-amd64/Packages</span><br><span class="line"> e62ff0123a74adfc6903d59a449cbdb0               40 contrib/binary-amd64/Packages.gz</span><br><span class="line"> e5e5d8f8688a49f7836b62b0f605b694              119 contrib/binary-amd64/Release</span><br><span class="line"> 040f7f5196ce62a26b596e10fe0c924e          1246183 main/binary-amd64/Packages</span><br><span class="line"> fb9b1a586d9c0e6f639ffee5e186fbc4           414562 main/binary-amd64/Packages.gz</span><br><span class="line"> dd30475d155e4b1beab9c1b8d7d1d703              116 main/binary-amd64/Release</span><br><span class="line"> 600f266567b08466e6c2e46f6f2a4856            40987 main/debian-installer/binary-amd64/Packages.gz</span><br><span class="line"> dd30475d155e4b1beab9c1b8d7d1d703              116 main/debian-installer/binary-amd64/Release</span><br><span class="line"> 4e0f08499f56c7a4da3ef2a02749d657             2950 main/i18n/Translation-ca.gz</span><br><span class="line"> b19a6ca7c0521247707371291a5d7a04            47191 main/i18n/Translation-cs.gz</span><br><span class="line">...<span class="comment">#下面的就不放出来了</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="4-添加preseed-cfg"><a href="#4-添加preseed-cfg" class="headerlink" title="4.添加preseed.cfg"></a>4.添加preseed.cfg</h2><p>按照我的想法都已经放入了mian里面了，还把信息写入了Package，应该会自动安装，但是并没有，看来安装系统在其他地方自己维护了一个安装列表，当然我们可以找找修改initrd的方法，但是debian-installer提供了preseed的机制我们就使用这个吧。</p>
+<p>我们可以看到Debian的目录下并没有Ubuntu一样的preseed文件夹。<br>debian和Ubuntu目录展示</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#debian</span></span><br><span class="line">.</span><br><span class="line">├── autorun.inf</span><br><span class="line">├── boot</span><br><span class="line">├── css</span><br><span class="line">├── debian -&gt; .</span><br><span class="line">├── dists</span><br><span class="line">├── doc</span><br><span class="line">├── EFI</span><br><span class="line">├── firmware</span><br><span class="line">├── g2ldr</span><br><span class="line">├── g2ldr.mbr</span><br><span class="line">├── install</span><br><span class="line">├── install.amd</span><br><span class="line">├── isolinux</span><br><span class="line">├── md5sum.txt</span><br><span class="line">├── pics</span><br><span class="line">├── pool</span><br><span class="line">├── README.html</span><br><span class="line">├── README.mirrors.html</span><br><span class="line">├── README.mirrors.txt</span><br><span class="line">├── README.source</span><br><span class="line">├── README.txt</span><br><span class="line">├── setup.exe</span><br><span class="line">├── tools</span><br><span class="line">└── win32-loader.ini</span><br><span class="line"></span><br><span class="line"><span class="comment">#Ubuntu</span></span><br><span class="line">.</span><br><span class="line">├── boot</span><br><span class="line">├── dists</span><br><span class="line">├── doc</span><br><span class="line">├── EFI</span><br><span class="line">├── install</span><br><span class="line">├── isolinux</span><br><span class="line">├── md5sum.txt</span><br><span class="line">├── pics</span><br><span class="line">├── pool</span><br><span class="line">├── preseed</span><br><span class="line">├── README.diskdefines</span><br><span class="line">└── ubuntu -&gt; .</span><br></pre></td></tr></table></figure>
+
+<p>如何确定pressed其实是在isoliuux目录下的cfg文件确定，cfg间相互引用全弄明白其实挺麻烦的，这里我给出我找到的cfg文件，就是isolinux/txt.cfg<br>cfg文件对比</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#debian</span></span><br><span class="line">label install</span><br><span class="line">	menu label ^Install</span><br><span class="line">	kernel /install.amd/vmlinuz</span><br><span class="line">	append desktop=xfce vga=788 initrd=/install.amd/initrd.gz --- quiet </span><br><span class="line"></span><br><span class="line"><span class="comment">#ubuntu</span></span><br><span class="line">default install</span><br><span class="line">label install</span><br><span class="line">  menu label ^Install Ubuntu Server</span><br><span class="line">  kernel /install/vmlinuz</span><br><span class="line">  append  file=/cdrom/preseed/ubuntu-server.seed vga=788 initrd=/install/initrd.gz quiet ---</span><br><span class="line">label hwe-install</span><br><span class="line">  menu label ^Install Ubuntu Server with the HWE kernel</span><br><span class="line">  kernel /install/hwe-vmlinuz</span><br><span class="line">  append  file=/cdrom/preseed/hwe-ubuntu-server.seed vga=788 initrd=/install/hwe-initrd.gz quiet ---</span><br><span class="line">label maas</span><br><span class="line">  menu label ^Install MAAS Region Controller</span><br><span class="line">  kernel /install/vmlinuz</span><br><span class="line">  append   modules=maas-region-udeb vga=788 initrd=/install/initrd.gz quiet ---</span><br><span class="line"></span><br><span class="line">label maasrack</span><br><span class="line">  menu label ^Install MAAS Rack Controller</span><br><span class="line">  kernel /install/vmlinuz</span><br><span class="line">  append   modules=maas-rack-udeb vga=788 initrd=/install/initrd.gz quiet ---</span><br><span class="line">label check</span><br><span class="line">  menu label ^Check disc <span class="keyword">for</span> defects</span><br><span class="line">  kernel /install/vmlinuz</span><br><span class="line">  append   MENU=/bin/cdrom-checker-menu vga=788 initrd=/install/initrd.gz quiet ---</span><br><span class="line">label memtest</span><br><span class="line">  menu label Test ^memory</span><br><span class="line">  kernel /install/mt86plus</span><br><span class="line">label hd</span><br><span class="line">  menu label ^Boot from first hard disk</span><br><span class="line">  localboot 0x80</span><br></pre></td></tr></table></figure>
+
+<p>这里可以看到Ubuntu的append字段里面指明了preseed的位置file=/cdrom/preseed/ubuntu-server.seed，因此我们在debian的append中加入file=/cdrom/pressd.cfg然后将命令写入即可。</p>
+<ul>
+<li>这里使用preseed.cfg而不采用preseed/xxxx.seed是因为我在debian wiki上看到他们都采用preseed.cfg的命名，入乡随俗。</li>
+</ul>
+<p>这里其实只相当于完成了一半，可以看到ubuntu的txt.cfg比debian的怎么多了这么多，debian这只有install，还有图形的install和一些check之类的配置呢？</p>
+<p>debian的isolinux目录下仔细查找可以找到gtk.cfg，其内容如下</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">default installgui</span><br><span class="line">label installgui</span><br><span class="line">	menu label ^Graphical install</span><br><span class="line">	menu default</span><br><span class="line">	kernel /install.amd/vmlinuz</span><br><span class="line">	append desktop=xfce vga=788 initrd=/install.amd/gtk/initrd.gz --- quiet</span><br></pre></td></tr></table></figure>
+
+<p>没错从名字可以看出，这个就是带界面安装系统的配置文件，在这里我们也需要将preseed文件的位置加上。</p>
+<p>在Ubuntu中我们采用的是将</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d-i preseed/late_command string apt-install <span class="variable">$packgename</span></span><br></pre></td></tr></table></figure>
+
+<p>写入到seed文件底部，这个的意思是在安装的最后阶段执行package的安装，看起来不太优雅。<br>这里我给出一种新的写法<br>preseed.cfg：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d-i pkgsel/include string <span class="variable">$packgename</span></span><br></pre></td></tr></table></figure>
+
+<p>这个是在安装完系统默认的软件包后，安装你的软件包（执行阶段为select and install package）</p>
+<h2 id="5-生成iso"><a href="#5-生成iso" class="headerlink" title="5.生成iso"></a>5.生成iso</h2><p>这里和Ubuntu一样<br>对md5文件进行签名</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> <span class="variable">$imagepath</span></span><br><span class="line">find -<span class="built_in">type</span> f -print0 | sudo xargs -0 md5sum | grep -v isolinux/ | grep -v md5sum  |sudo tee md5sum.txt</span><br></pre></td></tr></table></figure>
+
+<p>-b 和 -c指定的路径都是相对于$imagepath来说的，最终会$imagepath下生成iso。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">IMAGE=custom.iso</span><br><span class="line"></span><br><span class="line">mkisofs -r -V <span class="string">"Custom Ubuntu Install CD"</span> \</span><br><span class="line">            -cache-inodes \</span><br><span class="line">            -J -l -b isolinux/isolinux.bin \</span><br><span class="line">            -c isolinux/boot.cat -no-emul-boot \</span><br><span class="line">            -boot-load-size 4 -boot-info-table \</span><br><span class="line">            -o <span class="variable">$IMAGE</span> <span class="variable">$imagepath</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="6-其他附加preseed的方法"><a href="#6-其他附加preseed的方法" class="headerlink" title="6.其他附加preseed的方法"></a>6.其他附加preseed的方法</h2><p>由于iso会提供多种安装方式，因此往每个安装方式指定preseed有点麻烦，在debian的wiki上给出了三种方式。</p>
+<ul>
+<li>将preseed.cfg附加到initrd</li>
+<li>指定preseed.cfg的位置（上面使用的方法）</li>
+<li>从网上下载preseed.cfg</li>
+</ul>
+<p>下载preseed有点麻烦，需要搭建提供下载的服务器，这里就不再展开了。<br>重点讲讲第一种方法。<br>debian镜像文件中有一个install.amd的目录，我们就使用这个目录.<br>这里给出脚本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">isopath=~/debianiso</span><br><span class="line">chmod +w -R $isopath/install.amd/</span><br><span class="line">pushd $isopath/install.amd</span><br><span class="line">cat &gt; preseed.cfg &lt;&lt; EOF#生成preseed.cfg文件</span><br><span class="line">d-i pkgsel/include string secagent</span><br><span class="line">EOF</span><br><span class="line">#查找所有的initrd.gz</span><br><span class="line">for initrd in $(find $isopath/install.amd/ -name initrd.gz);do</span><br><span class="line">        gzip -d $initrd</span><br><span class="line">        echo preseed.cfg | cpio -H newc -o -A -F $(dirname $initrd)/initrd#将preseed.cfg附加上去</span><br><span class="line">        gzip $(dirname $initrd)/initrd</span><br><span class="line">done</span><br><span class="line">rm -f preseed.cfg</span><br><span class="line">chmod -w -R $isopath/install.amd/</span><br><span class="line">popd</span><br></pre></td></tr></table></figure>
+
+<h2 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h2><p>如果你对于preseed文件有兴趣<br>这里给出Ubuntu的preseed示例文件,你也可以在Ubunut的镜像下找到（目录doc\install\manual\example-preseed.txt.gz）<br>太长懒得放上来了，自己解压镜像去找吧。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/linux/" rel="tag"># linux</a>
+          
+            <a href="/tags/Debian/" rel="tag"># Debian</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/post/6a6ee787.html" rel="next" title="在Ubuntu安装镜像中添加软件包">
+                <i class="fa fa-chevron-left"></i> 在Ubuntu安装镜像中添加软件包
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Roman</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/DoAsRomansDo" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-解压镜像"><span class="nav-number">2.</span> <span class="nav-text">1.解压镜像</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-添加deb包"><span class="nav-number">3.</span> <span class="nav-text">2.添加deb包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-重新生成Pakages和Release文件"><span class="nav-number">4.</span> <span class="nav-text">3.重新生成Pakages和Release文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-添加preseed-cfg"><span class="nav-number">5.</span> <span class="nav-text">4.添加preseed.cfg</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-生成iso"><span class="nav-number">6.</span> <span class="nav-text">5.生成iso</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-其他附加preseed的方法"><span class="nav-number">7.</span> <span class="nav-text">6.其他附加preseed的方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#附录"><span class="nav-number">8.</span> <span class="nav-text">附录</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Roman</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+#mermaid支持
+
+  <script src="/lib/custom/mermaid.min.js"></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize("");
+    }
+  </script>
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

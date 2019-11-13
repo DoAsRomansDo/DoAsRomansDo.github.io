@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Roman&#39;s blog">
 <meta property="og:description" content="简介本教程是在ubuntu16.04 desktop amd64上进行编辑。镜像为ubuntu16.04 server amd64。参考地址：InstallCDCustomizationLiveCDCustomization定制Ubuntu安装CD 这里对接下来使用的一些变量进行说明 12345678910$isopath        #iso文件的路径$mountpoint     #将iso">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-11-11T07:54:54.338Z">
+<meta property="og:updated_time" content="2019-11-13T08:10:00.195Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="在Ubuntu安装镜像中添加软件包">
 <meta name="twitter:description" content="简介本教程是在ubuntu16.04 desktop amd64上进行编辑。镜像为ubuntu16.04 server amd64。参考地址：InstallCDCustomizationLiveCDCustomization定制Ubuntu安装CD 这里对接下来使用的一些变量进行说明 12345678910$isopath        #iso文件的路径$mountpoint     #将iso">
@@ -459,7 +459,7 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> <span class="variable">$imagepath</span></span><br><span class="line">gpg --default-key <span class="variable">$yourkeyid</span> --output <span class="variable">$imagepath</span>/dists/<span class="variable">$DIST</span>/Release.gpg -ba <span class="variable">$imagepath</span>/dists/<span class="variable">$DIST</span>/Release</span><br></pre></td></tr></table></figure>
 
 <h2 id="6-编辑seed文件来安装"><a href="#6-编辑seed文件来安装" class="headerlink" title="6.编辑seed文件来安装"></a>6.编辑seed文件来安装</h2><p>生成的iso似乎不会安装extras里面的软件，这里给出一个修补的办法，修改preseed目录下的seed文件。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">chmod +w  <span class="variable">$iamgepath</span>/preseed/*.seed</span><br><span class="line"><span class="keyword">for</span> seed <span class="keyword">in</span> <span class="variable">$iamgepath</span>/preseed/*.seed; <span class="keyword">do</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">"d-i preseed/late_command string apt-install <span class="variable">$packgename</span>"</span> &gt;&gt; <span class="variable">$seed</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line">chmod -w  <span class="variable">$iamgepath</span>/preseed/*.seed</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">chmod +w  <span class="variable">$iamgepath</span>/preseed/*.seed</span><br><span class="line"><span class="keyword">for</span> seed <span class="keyword">in</span> <span class="variable">$iamgepath</span>/preseed/*.seed; <span class="keyword">do</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">"d-i preseed/late_command string apt-install <span class="variable">$packagename</span>"</span> &gt;&gt; <span class="variable">$seed</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line">chmod -w  <span class="variable">$iamgepath</span>/preseed/*.seed</span><br></pre></td></tr></table></figure>
 
 <p>*软件名字似乎都是小写若安装不成功，可以在安装界面按下alt+F2进入shell脚本界面，通过以下命令来查询你的软件包的名字。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt-cache search package_name</span><br></pre></td></tr></table></figure>
@@ -470,6 +470,7 @@
 <p>-b 和 -c指定的路径都是相对于$imagepath来说的，最终会$imagepath下生成iso。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">IMAGE=custom.iso</span><br><span class="line"></span><br><span class="line">mkisofs -r -V <span class="string">"Custom Ubuntu Install CD"</span> \</span><br><span class="line">            -cache-inodes \</span><br><span class="line">            -J -l -b isolinux/isolinux.bin \</span><br><span class="line">            -c isolinux/boot.cat -no-emul-boot \</span><br><span class="line">            -boot-load-size 4 -boot-info-table \</span><br><span class="line">            -o <span class="variable">$IMAGE</span> <span class="variable">$imagepath</span></span><br></pre></td></tr></table></figure>
 
+<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>这个教程只是我跟着wiki上的教程一步一步做的，有许多步骤应该是没必要的，下一节定制debian的系统，其中会有更简洁的方法。可以先按照debian的方法试试，如果通不过再看看Ubuntu的，选择一些步骤添加上。<br><a href="https://doasromansdo.github.io/post/5092e38f.html#more" target="_blank" rel="noopener">在Debian安装镜像中添加软件包</a></p>
 <h2 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h2><h3 id="A-镜像安装时如何调试"><a href="#A-镜像安装时如何调试" class="headerlink" title="A.镜像安装时如何调试"></a>A.镜像安装时如何调试</h3><p>alt+F1 可以进入可视化界面，也就是正常的Ubuntu安装界面。<br>alt+F2 进入交互式shell界面，此时在isolinux内，可以通过chroot /target来进入正在安装的Ubuntu系统。<br>alt+F4 查看日志，基本知道是哪个地方安装不成功。</p>
 <h3 id="B-ubuntu版本以及名称对应"><a href="#B-ubuntu版本以及名称对应" class="headerlink" title="B.ubuntu版本以及名称对应"></a>B.ubuntu版本以及名称对应</h3><table>
 <thead>
@@ -682,6 +683,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/post/5092e38f.html" rel="prev" title="在Debian安装镜像中添加软件包">
+                在Debian安装镜像中添加软件包 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -757,7 +762,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">9</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -779,7 +784,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -822,7 +827,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-拷贝镜像内容到硬盘上"><span class="nav-number">2.</span> <span class="nav-text">1.拷贝镜像内容到硬盘上</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-创建extras组件"><span class="nav-number">3.</span> <span class="nav-text">2.创建extras组件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-生成新的ubuntu-keyring-deb来对你的CD进行签名"><span class="nav-number">4.</span> <span class="nav-text">3.生成新的ubuntu-keyring.deb来对你的CD进行签名</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-生成新的filesystem-squashfs"><span class="nav-number">5.</span> <span class="nav-text">4.生成新的filesystem.squashfs</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-使用apt-ftparchive来构建仓库"><span class="nav-number">6.</span> <span class="nav-text">5.使用apt-ftparchive来构建仓库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-编辑seed文件来安装"><span class="nav-number">7.</span> <span class="nav-text">6.编辑seed文件来安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-生成iso"><span class="nav-number">8.</span> <span class="nav-text">7.生成iso</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#附录"><span class="nav-number">9.</span> <span class="nav-text">附录</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#A-镜像安装时如何调试"><span class="nav-number">9.1.</span> <span class="nav-text">A.镜像安装时如何调试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#B-ubuntu版本以及名称对应"><span class="nav-number">9.2.</span> <span class="nav-text">B.ubuntu版本以及名称对应</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-拷贝镜像内容到硬盘上"><span class="nav-number">2.</span> <span class="nav-text">1.拷贝镜像内容到硬盘上</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-创建extras组件"><span class="nav-number">3.</span> <span class="nav-text">2.创建extras组件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-生成新的ubuntu-keyring-deb来对你的CD进行签名"><span class="nav-number">4.</span> <span class="nav-text">3.生成新的ubuntu-keyring.deb来对你的CD进行签名</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-生成新的filesystem-squashfs"><span class="nav-number">5.</span> <span class="nav-text">4.生成新的filesystem.squashfs</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-使用apt-ftparchive来构建仓库"><span class="nav-number">6.</span> <span class="nav-text">5.使用apt-ftparchive来构建仓库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-编辑seed文件来安装"><span class="nav-number">7.</span> <span class="nav-text">6.编辑seed文件来安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-生成iso"><span class="nav-number">8.</span> <span class="nav-text">7.生成iso</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#后记"><span class="nav-number">9.</span> <span class="nav-text">后记</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#附录"><span class="nav-number">10.</span> <span class="nav-text">附录</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#A-镜像安装时如何调试"><span class="nav-number">10.1.</span> <span class="nav-text">A.镜像安装时如何调试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#B-ubuntu版本以及名称对应"><span class="nav-number">10.2.</span> <span class="nav-text">B.ubuntu版本以及名称对应</span></a></li></ol></li></ol></div>
             
 
           </div>
