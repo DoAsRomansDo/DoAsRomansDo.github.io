@@ -14,6 +14,9 @@
 <p>或者直接使用cp命令拷贝</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir -p <span class="variable">$imagepath</span></span><br><span class="line">cp -a <span class="variable">$mountpoint</span> <span class="variable">$imagepath</span></span><br></pre></td></tr></table></figure>
 
+<p>也可以直接将iso解压</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">bsdtar -C <span class="variable">$imagepath</span> -xf debian-10.1.0-amd64-xfce-CD-1.iso</span><br></pre></td></tr></table></figure>
+
 <h2 id="2-添加deb包"><a href="#2-添加deb包" class="headerlink" title="2.添加deb包"></a>2.添加deb包</h2><p>这次我懒得创建extras组件了，直接把deb放到pool/main相应的文件夹下，为了美观以及减少出现不可预知的bug，我采取了和其它deb包相同的结构，比如我的软件以字母s开头，就放在了pool/main/s/软件名/下面。</p>
 <h2 id="3-重新生成Pakages和Release文件"><a href="#3-重新生成Pakages和Release文件" class="headerlink" title="3.重新生成Pakages和Release文件"></a>3.重新生成Pakages和Release文件</h2><p>从网上下载indices似乎是没有必要的，我只在main仓库下添加了包，因此只需要修改相应的文件就行，手动修改太麻烦，这里使用apt-ftparchive。配置文件如下</p>
 <p>apt-ftparchive-deb.conf</p>
@@ -571,8 +574,8 @@
         <category>安全漏洞</category>
       </categories>
       <tags>
-        <tag>安全</tag>
         <tag>linux</tag>
+        <tag>安全</tag>
       </tags>
   </entry>
   <entry>
@@ -621,9 +624,9 @@
         <category>安全漏洞</category>
       </categories>
       <tags>
+        <tag>安全</tag>
         <tag>windows</tag>
         <tag>rdp</tag>
-        <tag>安全</tag>
       </tags>
   </entry>
   <entry>
@@ -653,9 +656,9 @@
         <category>安全漏洞</category>
       </categories>
       <tags>
+        <tag>安全</tag>
         <tag>windows</tag>
         <tag>rdp</tag>
-        <tag>安全</tag>
       </tags>
   </entry>
   <entry>
