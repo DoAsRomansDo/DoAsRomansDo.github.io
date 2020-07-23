@@ -84,7 +84,7 @@
     <!-- RSS -->
     
         
-            <link rel="alternate" type="application/atom+xml" href="/atom.xml">
+            <link rel="alternate" type="application/rss+xml" href="/rss2.xml">
         
     
 
@@ -102,6 +102,11 @@
         <style id="style_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("style_css","/css/style.min.css?MKetZV3cUTfDxvMffaOezg==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
 
         
+            
+                <style id="prettify_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("prettify_css","/css/prettify.min.css?zp8STOU9v89XWFEnN+6YmQ==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+                <style id="prettify_theme"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("prettify_theme","/css/prettify/github-v2.min.css?AfzKxt++K+/lhZBlSjnxwg==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+            
+        
 
     
 
@@ -112,7 +117,7 @@
 <!-- Other Styles -->
 <style>
   body, html {
-    font-family: Arial, sans-serif, "Microsoft YaHei", Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "微软雅黑";
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
     overflow-x: hidden !important;
   }
   
@@ -483,6 +488,12 @@
 
     <!-- Share QQ -->
     
+        <a class="post_share-link" href="http://connect.qq.com/widget/shareqq/index.html?site=Roman&#39;s blog&title=在Ubuntu安装镜像中添加软件包&summary=&pics=http://yoursite.com/img/favicon.png&url=http://yoursite.com/post/6a6ee787.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 QQ
+            </li>
+        </a>
+    
 
     <!-- Share Telegram -->
     
@@ -497,90 +508,206 @@
     
         <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>本教程是在ubuntu16.04 desktop amd64上进行编辑。<br>镜像为ubuntu16.04 server amd64。<br>参考地址：<br><a href="https://help.ubuntu.com/community/InstallCDCustomization?action=show&redirect=InstallCDCustomizationHowTo" target="_blank" rel="noopener">InstallCDCustomization</a><br><a href="https://help.ubuntu.com/community/LiveCDCustomization" target="_blank" rel="noopener">LiveCDCustomization</a><br><a href="https://wiki.ubuntu.com/定制Ubuntu安装CD" target="_blank" rel="noopener">定制Ubuntu安装CD</a></p>
 <p>这里对接下来使用的一些变量进行说明</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$isopath</span>        <span class="comment">#iso文件的路径</span></span><br><span class="line"><span class="variable">$mountpoint</span>     <span class="comment">#将iso挂载的点</span></span><br><span class="line"><span class="variable">$imagepath</span>      <span class="comment">#将iso文件复制到的目录</span></span><br><span class="line"><span class="variable">$keybuild</span>       <span class="comment">#构建ubuntu-keyring包的位置</span></span><br><span class="line"><span class="variable">$yourkeyid</span>      <span class="comment">#你自己生成的key</span></span><br><span class="line"><span class="variable">$indicesDir</span>     <span class="comment">#下载的indice文件</span></span><br><span class="line"><span class="variable">$DIST</span>           <span class="comment">#ubuntu的开发代号,使用第一个单词，比如16.04为xenial</span></span><br><span class="line"><span class="variable">$version</span>        <span class="comment">#ubuntu的版本号</span></span><br><span class="line"><span class="variable">$aptftparchiveconf</span>  <span class="comment">#存放apt-ftparchive配置文件的目录</span></span><br><span class="line"><span class="variable">$APTCONF</span>        <span class="comment">#release.conf的位置</span></span><br></pre></td></tr></table></figure>
-
+<pre><code class="bash">$isopath        #iso文件的路径
+$mountpoint     #将iso挂载的点
+$imagepath      #将iso文件复制到的目录
+$keybuild       #构建ubuntu-keyring包的位置
+$yourkeyid      #你自己生成的key
+$indicesDir     #下载的indice文件
+$DIST           #ubuntu的开发代号,使用第一个单词，比如16.04为xenial
+$version        #ubuntu的版本号
+$aptftparchiveconf  #存放apt-ftparchive配置文件的目录
+$APTCONF        #release.conf的位置</code></pre>
 <h2 id="1-拷贝镜像内容到硬盘上"><a href="#1-拷贝镜像内容到硬盘上" class="headerlink" title="1.拷贝镜像内容到硬盘上"></a>1.拷贝镜像内容到硬盘上</h2><p>挂载镜像</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mount -o loop <span class="variable">$isopath</span> <span class="variable">$mountpoint</span></span><br></pre></td></tr></table></figure>
-
+<pre><code class="bash">mount -o loop $isopath $mountpoint</code></pre>
 <p>使用rsync复制文件到硬盘</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rsync -av <span class="variable">$mountpoint</span> <span class="variable">$imagepath</span></span><br></pre></td></tr></table></figure>
-
+<pre><code class="bash">rsync -av $mountpoint $imagepath</code></pre>
 <p>或者直接使用cp命令拷贝</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p <span class="variable">$imagepath</span></span><br><span class="line">cp -a <span class="variable">$mountpoint</span> <span class="variable">$imagepath</span></span><br></pre></td></tr></table></figure>
-
+<pre><code class="bash">mkdir -p $imagepath
+cp -a $mountpoint $imagepath</code></pre>
 <ul>
 <li>注意在复制完后查看一下，是否.disk也复制过去了，如果没有，最终镜像安装会出现这不是一张UbuntuCD的警告。</li>
 </ul>
-<h2 id="2-创建extras组件"><a href="#2-创建extras组件" class="headerlink" title="2.创建extras组件"></a>2.创建extras组件</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> <span class="variable">$imagepath</span></span><br><span class="line">mkdir -p pool/extras/</span><br></pre></td></tr></table></figure>
-
+<h2 id="2-创建extras组件"><a href="#2-创建extras组件" class="headerlink" title="2.创建extras组件"></a>2.创建extras组件</h2><pre><code class="bash">cd $imagepath
+mkdir -p pool/extras/</code></pre>
 <p>把你想要安装的.deb包都放到pool/extras/目录下。</p>
 <h2 id="3-生成新的ubuntu-keyring-deb来对你的CD进行签名"><a href="#3-生成新的ubuntu-keyring-deb来对你的CD进行签名" class="headerlink" title="3.生成新的ubuntu-keyring.deb来对你的CD进行签名"></a>3.生成新的ubuntu-keyring.deb来对你的CD进行签名</h2><p>我们需要使用GPG来对release文件进行签名，安装系统会根据所持有的Ubuntu-keyring包来对公钥签名进行验证。<br>为了完成密钥的生成你需要下载gpg包。<br>签名密钥生成的命令</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gpg --gen-key</span><br></pre></td></tr></table></figure>
-
+<pre><code class="bash">gpg --gen-key</code></pre>
 <p>一切都按默认的来就行，不过教程上种类使用的是DSA and Elgamal，因此我也采用了这个种类。<br>列出key</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">gpg --list-keys</span><br><span class="line">pub   1024D/437D05B5 2006-09-08</span><br><span class="line">uid                  XXX Signing Key &lt;packages@xxx.example.org&gt;</span><br><span class="line">sub   2048g/79164387 2006-09-08</span><br></pre></td></tr></table></figure>
-
+<pre><code class="bash">gpg --list-keys
+pub   1024D/437D05B5 2006-09-08
+uid                  XXX Signing Key &lt;packages@xxx.example.org&gt;
+sub   2048g/79164387 2006-09-08</code></pre>
 <p>你也可以在–list-keys 后面加参数来查找相关的key</p>
 <p>生成完密钥后，构建包含自己密钥的ubuntu-keyring包</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> <span class="variable">$keybuild</span></span><br><span class="line">sudo apt-get install fakeroot   </span><br><span class="line">apt-get <span class="built_in">source</span> ubuntu-keyring</span><br><span class="line"><span class="built_in">cd</span> ubuntu-keyring-2012.05.19/keyrings</span><br><span class="line">gpg --import &lt; ubuntu-archive-keyring.gpg</span><br><span class="line">gpg --list-keys <span class="string">"你的key的名字或者邮箱"</span></span><br><span class="line">gpg --<span class="built_in">export</span> FBB75451 437D05B5 C0B21F32 EFE21092 <span class="variable">$yourkeyid</span> &gt; ubuntu-archive-keyring.gpg</span><br><span class="line"><span class="built_in">cd</span> ..    <span class="comment"># 现在处于ubuntu-keyring-2012.05.19目录中</span></span><br><span class="line">dpkg-buildpackage -rfakeroot -m<span class="string">"Your Name &lt;your.email@your.host&gt;"</span> -k<span class="variable">$yourkeyid</span></span><br><span class="line"><span class="built_in">cd</span> ..  <span class="comment"># 现在处于$keybuild中</span></span><br><span class="line">cp ubuntu-keyring*deb <span class="variable">$imagepath</span>/pool/main/u/ubuntu-keyring</span><br></pre></td></tr></table></figure>
-
+<pre><code class="bash">cd $keybuild
+sudo apt-get install fakeroot   
+apt-get source ubuntu-keyring
+cd ubuntu-keyring-2012.05.19/keyrings
+gpg --import &lt; ubuntu-archive-keyring.gpg
+gpg --list-keys &quot;你的key的名字或者邮箱&quot;
+gpg --export FBB75451 437D05B5 C0B21F32 EFE21092 $yourkeyid &gt; ubuntu-archive-keyring.gpg
+cd ..    # 现在处于ubuntu-keyring-2012.05.19目录中
+dpkg-buildpackage -rfakeroot -m&quot;Your Name &lt;your.email@your.host&gt;&quot; -k$yourkeyid
+cd ..  # 现在处于$keybuild中
+cp ubuntu-keyring*deb $imagepath/pool/main/u/ubuntu-keyring</code></pre>
 <ul>
 <li>dpkg-buildpackage会去root下面寻找你的key，所以推荐这些过程以root账号运行。</li>
 </ul>
 <h2 id="4-生成新的filesystem-squashfs"><a href="#4-生成新的filesystem-squashfs" class="headerlink" title="4.生成新的filesystem.squashfs"></a>4.生成新的filesystem.squashfs</h2><p>解开filesystem.squashfs</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> <span class="variable">$imagepath</span></span><br><span class="line">unsquashfs install/filesystem.squashfs</span><br></pre></td></tr></table></figure>
-
+<pre><code class="bash">cd $imagepath
+unsquashfs install/filesystem.squashfs</code></pre>
 <p>这个时DIST在install目录下会出现squashfs-root目录<br>将你的kDISTy导入到相应的目录</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> <span class="variable">$imaDISTepath</span>/install/squashfs-root</span><br><span class="line">gpg --<span class="built_in">export</span> FBB75451 437D05B5 C0B21F32 EFE21092 <span class="variable">$yourkeyid</span> &gt; /usr/share/keyrings/ubuntu-archive-keyring.gpg </span><br><span class="line">gpg --<span class="built_in">export</span> FBB75451 437D05B5 C0B21F32 EFE21092 <span class="variable">$yourkeyid</span> &gt; /etc/apt/trusted.gpg </span><br><span class="line">gpg --<span class="built_in">export</span> FBB75451 437D05B5 C0B21F32 EFE21092 <span class="variable">$yourkeyid</span> &gt; /var/lib/apt/keyrings/ubuntu-archive-keyring.gpg</span><br></pre></td></tr></table></figure>
-
+<pre><code class="bash">cd $imaDISTepath/install/squashfs-root
+gpg --export FBB75451 437D05B5 C0B21F32 EFE21092 $yourkeyid &gt; /usr/share/keyrings/ubuntu-archive-keyring.gpg 
+gpg --export FBB75451 437D05B5 C0B21F32 EFE21092 $yourkeyid &gt; /etc/apt/trusted.gpg 
+gpg --export FBB75451 437D05B5 C0B21F32 EFE21092 $yourkeyid &gt; /var/lib/apt/keyrings/ubuntu-archive-keyring.gpg </code></pre>
 <p>squashfs-root应该是相当于没有安装软件和配置的ubuntu系统文件，如果你需要对ubuntu进行一些个性化配置，可以对相应文件修改，比如修改squashfs-root下的/etc/apt/sources.list来更改源之类的操作。<br>配合上chroot也可以进行更加高级的操作</p>
 <p>修改完后将其大小记录到filesystem.size</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> <span class="variable">$imagepath</span>/install/squashfs-root</span><br><span class="line">du -sx --block-size=1 ./ | cut -f1 &gt; <span class="variable">$imagepath</span>/install/filesystem.size</span><br></pre></td></tr></table></figure>
-
+<pre><code class="bash">cd $imagepath/install/squashfs-root
+du -sx --block-size=1 ./ | cut -f1 &gt; $imagepath/install/filesystem.size</code></pre>
 <p>重新打包</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rm extract-cd/casper/filesystem.squashfs</span><br><span class="line">mksquashfs edit extract-cd/casper/filesystem.squashfs -nolzma</span><br></pre></td></tr></table></figure>
-
+<pre><code class="bash">rm extract-cd/casper/filesystem.squashfs
+mksquashfs edit extract-cd/casper/filesystem.squashfs -nolzma</code></pre>
 <ul>
 <li>-nolzma参数只适用于Hardy到Karmic版本。</li>
 <li>squashfs必须使用与您正在定制的CD上使用的内核兼容的mksquashfs版本生成。例如，您不能在karmic上生成jaunty的squashfs，因为jaunty内核无法挂载使用mksquashfs从karmic准备的squashfs。</li>
 </ul>
 <h2 id="5-使用apt-ftparchive来构建仓库"><a href="#5-使用apt-ftparchive来构建仓库" class="headerlink" title="5.使用apt-ftparchive来构建仓库"></a>5.使用apt-ftparchive来构建仓库</h2><p>获取indices文件</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p <span class="variable">$indicesDir</span> </span><br><span class="line"><span class="built_in">cd</span> <span class="variable">$indicesDir</span></span><br><span class="line">DIST=<span class="variable">$DIST</span></span><br><span class="line"><span class="keyword">for</span> SUFFIX <span class="keyword">in</span> extra.main main main.debian-installer restricted restricted.debian-installer; <span class="keyword">do</span></span><br><span class="line">  wget http://archive.ubuntu.com/ubuntu/indices/override.<span class="variable">$DIST</span>.<span class="variable">$SUFFIX</span></span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
-
+<pre><code class="bash">mkdir -p $indicesDir 
+cd $indicesDir
+DIST=$DIST
+for SUFFIX in extra.main main main.debian-installer restricted restricted.debian-installer; do
+  wget http://archive.ubuntu.com/ubuntu/indices/override.$DIST.$SUFFIX
+done</code></pre>
 <p>接下来在创建apt-ftparchive的配置文件<br>分别为apt-ftparchive-deb.conf, apt-ftparchive-udeb.conf, apt-ftparchive-extras.conf,和release.conf，放在$aptftparchiveconf目录下。</p>
 <p>这里给出相关的配置文件<br>apt-ftparchive-deb.conf</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">Dir &#123;</span><br><span class="line">  ArchiveDir <span class="string">"<span class="variable">$imagepath</span>"</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">TreeDefault &#123;</span><br><span class="line">  Directory <span class="string">"pool/"</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">BinDirectory <span class="string">"pool/main"</span> &#123;</span><br><span class="line">  Packages <span class="string">"dists/<span class="variable">$DIST</span>/main/binary-amd64/Packages"</span>;</span><br><span class="line">  BinOverride <span class="string">"<span class="variable">$indicesDir</span>/override.<span class="variable">$DIST</span>.main"</span>;</span><br><span class="line">  ExtraOverride <span class="string">"<span class="variable">$indicesDir</span>/override.<span class="variable">$DIST</span>.extra.main"</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">BinDirectory <span class="string">"pool/restricted"</span> &#123;</span><br><span class="line"> Packages <span class="string">"dists/<span class="variable">$DIST</span>/restricted/binary-amd64/Packages"</span>;</span><br><span class="line"> BinOverride <span class="string">"<span class="variable">$indicesDir</span>/override.<span class="variable">$DIST</span>.restricted"</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Default &#123;</span><br><span class="line">  Packages &#123;</span><br><span class="line">    Extensions <span class="string">".deb"</span>;</span><br><span class="line">    Compress <span class="string">". gzip"</span>;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Contents &#123;</span><br><span class="line">  Compress <span class="string">"gzip"</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<pre><code class="bash">Dir {
+  ArchiveDir &quot;$imagepath&quot;;
+};
 
+TreeDefault {
+  Directory &quot;pool/&quot;;
+};
+
+BinDirectory &quot;pool/main&quot; {
+  Packages &quot;dists/$DIST/main/binary-amd64/Packages&quot;;
+  BinOverride &quot;$indicesDir/override.$DIST.main&quot;;
+  ExtraOverride &quot;$indicesDir/override.$DIST.extra.main&quot;;
+};
+
+BinDirectory &quot;pool/restricted&quot; {
+ Packages &quot;dists/$DIST/restricted/binary-amd64/Packages&quot;;
+ BinOverride &quot;$indicesDir/override.$DIST.restricted&quot;;
+};
+
+Default {
+  Packages {
+    Extensions &quot;.deb&quot;;
+    Compress &quot;. gzip&quot;;
+  };
+};
+
+Contents {
+  Compress &quot;gzip&quot;;
+};</code></pre>
 <p>apt-ftparchive-udeb.conf</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">Dir &#123;</span><br><span class="line">  ArchiveDir <span class="string">"<span class="variable">$imagepath</span>"</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">TreeDefault &#123;</span><br><span class="line">  Directory <span class="string">"pool/"</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">BinDirectory <span class="string">"pool/main"</span> &#123;</span><br><span class="line">  Packages <span class="string">"dists/<span class="variable">$DIST</span>/main/debian-installer/binary-amd64/Packages"</span>;</span><br><span class="line">  BinOverride <span class="string">"<span class="variable">$indicesDir</span>/override.<span class="variable">$DIST</span>.main.debian-installer"</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">BinDirectory <span class="string">"pool/restricted"</span> &#123;</span><br><span class="line">  Packages <span class="string">"dists/<span class="variable">$DIST</span>/restricted/debian-installer/binary-amd64/Packages"</span>;</span><br><span class="line">  BinOverride <span class="string">"<span class="variable">$indicesDir</span>/override.<span class="variable">$DIST</span>.restricted.debian-installer"</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Default &#123;</span><br><span class="line">  Packages &#123;</span><br><span class="line">    Extensions <span class="string">".udeb"</span>;</span><br><span class="line">    Compress <span class="string">". gzip"</span>;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Contents &#123;</span><br><span class="line">  Compress <span class="string">"gzip"</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<pre><code class="bash">Dir {
+  ArchiveDir &quot;$imagepath&quot;;
+};
 
+TreeDefault {
+  Directory &quot;pool/&quot;;
+};
+
+BinDirectory &quot;pool/main&quot; {
+  Packages &quot;dists/$DIST/main/debian-installer/binary-amd64/Packages&quot;;
+  BinOverride &quot;$indicesDir/override.$DIST.main.debian-installer&quot;;
+};
+
+BinDirectory &quot;pool/restricted&quot; {
+  Packages &quot;dists/$DIST/restricted/debian-installer/binary-amd64/Packages&quot;;
+  BinOverride &quot;$indicesDir/override.$DIST.restricted.debian-installer&quot;;
+};
+
+Default {
+  Packages {
+    Extensions &quot;.udeb&quot;;
+    Compress &quot;. gzip&quot;;
+  };
+};
+
+Contents {
+  Compress &quot;gzip&quot;;
+};</code></pre>
 <p>apt-ftparchive-extras.conf</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">Dir &#123;</span><br><span class="line">  ArchiveDir <span class="string">"<span class="variable">$imagepath</span>"</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">TreeDefault &#123;</span><br><span class="line">  Directory <span class="string">"pool/"</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">BinDirectory <span class="string">"pool/extras"</span> &#123;</span><br><span class="line">  Packages <span class="string">"dists/<span class="variable">$DIST</span>/extras/binary-amd64/Packages"</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Default &#123;</span><br><span class="line">  Packages &#123;</span><br><span class="line">    Extensions <span class="string">".deb"</span>;</span><br><span class="line">    Compress <span class="string">". gzip"</span>;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Contents &#123;</span><br><span class="line">  Compress <span class="string">"gzip"</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<pre><code class="bash">Dir {
+  ArchiveDir &quot;$imagepath&quot;;
+};
 
+TreeDefault {
+  Directory &quot;pool/&quot;;
+};
+
+BinDirectory &quot;pool/extras&quot; {
+  Packages &quot;dists/$DIST/extras/binary-amd64/Packages&quot;;
+};
+
+Default {
+  Packages {
+    Extensions &quot;.deb&quot;;
+    Compress &quot;. gzip&quot;;
+  };
+};
+
+Contents {
+  Compress &quot;gzip&quot;;
+};</code></pre>
 <p>release.conf</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">APT::FTPArchive::Release::Origin <span class="string">"Ubuntu"</span>;</span><br><span class="line">APT::FTPArchive::Release::Label <span class="string">"Ubuntu"</span>;</span><br><span class="line">APT::FTPArchive::Release::Suite <span class="string">"<span class="variable">$DIST</span>"</span>;</span><br><span class="line">APT::FTPArchive::Release::Version <span class="string">"<span class="variable">$version</span>"</span>;</span><br><span class="line">APT::FTPArchive::Release::Codename <span class="string">"<span class="variable">$DIST</span>"</span>;</span><br><span class="line">APT::FTPArchive::Release::Architectures <span class="string">"amd64"</span>;</span><br><span class="line">APT::FTPArchive::Release::Components <span class="string">"main restricted extras"</span>;</span><br><span class="line">APT::FTPArchive::Release::Description <span class="string">"xxxxxx"</span>;</span><br></pre></td></tr></table></figure>
-
+<pre><code class="bash">APT::FTPArchive::Release::Origin &quot;Ubuntu&quot;;
+APT::FTPArchive::Release::Label &quot;Ubuntu&quot;;
+APT::FTPArchive::Release::Suite &quot;$DIST&quot;;
+APT::FTPArchive::Release::Version &quot;$version&quot;;
+APT::FTPArchive::Release::Codename &quot;$DIST&quot;;
+APT::FTPArchive::Release::Architectures &quot;amd64&quot;;
+APT::FTPArchive::Release::Components &quot;main restricted extras&quot;;
+APT::FTPArchive::Release::Description &quot;xxxxxx&quot;;</code></pre>
 <p>创建包的引用</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> <span class="variable">$imagepath</span></span><br><span class="line">apt-ftparchive packages pool/extras &gt; dists/stable/extras/binary-amd64/Packages</span><br><span class="line">gzip -c dists/stable/extras/binary-amd64/Packages | tee dists/stable/extras/binary-amd64/Packages.gz &gt; /dev/null</span><br></pre></td></tr></table></figure>
-
+<pre><code class="bash">cd $imagepath
+apt-ftparchive packages pool/extras &gt; dists/stable/extras/binary-amd64/Packages
+gzip -c dists/stable/extras/binary-amd64/Packages | tee dists/stable/extras/binary-amd64/Packages.gz &gt; /dev/null</code></pre>
 <p>开始构建仓库</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">APTCONF=<span class="variable">$aptftparchiveconf</span>/release.conf</span><br><span class="line">DIST=xenial</span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> <span class="variable">$imagepath</span></span><br><span class="line">apt-ftparchive -c <span class="variable">$APTCONF</span> generate /opt/apt-ftparchive/apt-ftparchive-deb.conf</span><br><span class="line">apt-ftparchive -c <span class="variable">$APTCONF</span> generate /opt/apt-ftparchive/apt-ftparchive-udeb.conf</span><br><span class="line">apt-ftparchive -c <span class="variable">$APTCONF</span> generate /opt/apt-ftparchive/apt-ftparchive-extras.conf</span><br><span class="line">apt-ftparchive -c <span class="variable">$APTCONF</span> release <span class="variable">$imagepath</span>/dists/<span class="variable">$DIST</span> &gt; <span class="variable">$imagepath</span>/dists/<span class="variable">$DIST</span>/Release</span><br></pre></td></tr></table></figure>
+<pre><code class="bash">APTCONF=$aptftparchiveconf/release.conf
+DIST=xenial
 
+cd $imagepath
+apt-ftparchive -c $APTCONF generate /opt/apt-ftparchive/apt-ftparchive-deb.conf
+apt-ftparchive -c $APTCONF generate /opt/apt-ftparchive/apt-ftparchive-udeb.conf
+apt-ftparchive -c $APTCONF generate /opt/apt-ftparchive/apt-ftparchive-extras.conf
+apt-ftparchive -c $APTCONF release $imagepath/dists/$DIST &gt; $imagepath/dists/$DIST/Release</code></pre>
 <p>对release文件签名</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> <span class="variable">$imagepath</span></span><br><span class="line">gpg --default-key <span class="variable">$yourkeyid</span> --output <span class="variable">$imagepath</span>/dists/<span class="variable">$DIST</span>/Release.gpg -ba <span class="variable">$imagepath</span>/dists/<span class="variable">$DIST</span>/Release</span><br></pre></td></tr></table></figure>
-
+<pre><code class="bash">cd $imagepath
+gpg --default-key $yourkeyid --output $imagepath/dists/$DIST/Release.gpg -ba $imagepath/dists/$DIST/Release</code></pre>
 <h2 id="6-编辑seed文件来安装"><a href="#6-编辑seed文件来安装" class="headerlink" title="6.编辑seed文件来安装"></a>6.编辑seed文件来安装</h2><p>生成的iso似乎不会安装extras里面的软件，这里给出一个修补的办法，修改preseed目录下的seed文件。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">chmod +w  <span class="variable">$iamgepath</span>/preseed/*.seed</span><br><span class="line"><span class="keyword">for</span> seed <span class="keyword">in</span> <span class="variable">$iamgepath</span>/preseed/*.seed; <span class="keyword">do</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">"d-i preseed/late_command string apt-install <span class="variable">$packagename</span>"</span> &gt;&gt; <span class="variable">$seed</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line">chmod -w  <span class="variable">$iamgepath</span>/preseed/*.seed</span><br></pre></td></tr></table></figure>
-
+<pre><code class="bash">chmod +w  $iamgepath/preseed/*.seed
+for seed in $iamgepath/preseed/*.seed; do
+        echo &quot;d-i preseed/late_command string apt-install $packagename&quot; &gt;&gt; $seed
+done
+chmod -w  $iamgepath/preseed/*.seed</code></pre>
 <p>*软件名字似乎都是小写若安装不成功，可以在安装界面按下alt+F2进入shell脚本界面，通过以下命令来查询你的软件包的名字。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt-cache search package_name</span><br></pre></td></tr></table></figure>
-
+<pre><code class="bash">apt-cache search package_name</code></pre>
 <h2 id="7-生成iso"><a href="#7-生成iso" class="headerlink" title="7.生成iso"></a>7.生成iso</h2><p>对md5文件进行签名</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> <span class="variable">$imagepath</span></span><br><span class="line">find -<span class="built_in">type</span> f -print0 | sudo xargs -0 md5sum | grep -v isolinux/ | grep -v md5sum  |sudo tee md5sum.txt</span><br></pre></td></tr></table></figure>
-
+<pre><code class="bash">cd $imagepath
+find -type f -print0 | sudo xargs -0 md5sum | grep -v isolinux/ | grep -v md5sum  |sudo tee md5sum.txt</code></pre>
 <p>-b 和 -c指定的路径都是相对于$imagepath来说的，最终会$imagepath下生成iso。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">IMAGE=custom.iso</span><br><span class="line"></span><br><span class="line">mkisofs -r -V <span class="string">"Custom Ubuntu Install CD"</span> \</span><br><span class="line">            -cache-inodes \</span><br><span class="line">            -J -l -b isolinux/isolinux.bin \</span><br><span class="line">            -c isolinux/boot.cat -no-emul-boot \</span><br><span class="line">            -boot-load-size 4 -boot-info-table \</span><br><span class="line">            -o <span class="variable">$IMAGE</span> <span class="variable">$imagepath</span></span><br></pre></td></tr></table></figure>
+<pre><code class="bash">IMAGE=custom.iso
 
+mkisofs -r -V &quot;Custom Ubuntu Install CD&quot; \
+            -cache-inodes \
+            -J -l -b isolinux/isolinux.bin \
+            -c isolinux/boot.cat -no-emul-boot \
+            -boot-load-size 4 -boot-info-table \
+            -o $IMAGE $imagepath</code></pre>
 <h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>这个教程只是我跟着wiki上的教程一步一步做的，有许多步骤应该是没必要的，下一节定制debian的系统，其中会有更简洁的方法。可以先按照debian的方法试试，如果通不过再看看Ubuntu的，选择一些步骤添加上。<br><a href="https://doasromansdo.github.io/post/5092e38f.html#more" target="_blank" rel="noopener">在Debian安装镜像中添加软件包</a></p>
 <h2 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h2><h3 id="A-镜像安装时如何调试"><a href="#A-镜像安装时如何调试" class="headerlink" title="A.镜像安装时如何调试"></a>A.镜像安装时如何调试</h3><p>alt+F1 可以进入可视化界面，也就是正常的Ubuntu安装界面。<br>alt+F2 进入交互式shell界面，此时在isolinux内，可以通过chroot /target来进入正在安装的Ubuntu系统。<br>alt+F4 查看日志，基本知道是哪个地方安装不成功。</p>
 <h3 id="B-ubuntu版本以及名称对应"><a href="#B-ubuntu版本以及名称对应" class="headerlink" title="B.ubuntu版本以及名称对应"></a>B.ubuntu版本以及名称对应</h3><table>
@@ -896,7 +1023,7 @@
             </a>
             <ul class="dropdown-menu">
             <li>
-                <a class="sidebar_archives-link" href="/archives/2020/07/">七月 2020<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/11/">十一月 2019<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/10/">十月 2019<span class="sidebar_archives-count">5</span></a>
+                <a class="sidebar_archives-link" href="/archives/2020/07/">七月 2020<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/11/">十一月 2019<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/10/">十月 2019<span class="sidebar_archives-count">5</span></a>
             </ul>
         </li>
         
@@ -904,11 +1031,34 @@
 
     <!-- Categories  -->
     
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">chrome_reader_mode</i>
+                
+                分类
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+                <li>
+                <a class="sidebar_archives-link" href="/categories/Linux/">Linux<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/categories/Windows/">Windows<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/categories/hexo/">hexo<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/categories/python/">python<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/categories/安全漏洞/">安全漏洞<span class="sidebar_archives-count">3</span></a>
+            </ul>
+        </li>
+        
+    
 
     <!-- Pages  -->
     
 
     <!-- Article Number  -->
+    
+        <li>
+            <a href="/archives">
+                文章总数
+                <span class="sidebar-badge">11</span>
+            </a>
+        </li>
+        
     
 </ul>
 
@@ -1119,6 +1269,12 @@ It will not impact the appearance and can give developers a lot of support :)
 
 <!-- Import prettify js  -->
 
+    
+        
+            <script>lsloader.load("prettify_js","/js/prettify.min.js?WN07fivHQSMKWy7BmHBB6w==", true)</script>
+        
+    
+
 
 
 <!-- Window Load -->
@@ -1129,6 +1285,13 @@ It will not impact the appearance and can give developers a lot of support :)
         $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
     });
 
+    
+        
+            $(function() {
+                $('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto;');
+                prettyPrint();
+                })
+        
     
     
 </script>

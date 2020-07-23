@@ -84,7 +84,7 @@
     <!-- RSS -->
     
         
-            <link rel="alternate" type="application/atom+xml" href="/atom.xml">
+            <link rel="alternate" type="application/rss+xml" href="/rss2.xml">
         
     
 
@@ -102,6 +102,11 @@
         <style id="style_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("style_css","/css/style.min.css?MKetZV3cUTfDxvMffaOezg==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
 
         
+            
+                <style id="prettify_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("prettify_css","/css/prettify.min.css?zp8STOU9v89XWFEnN+6YmQ==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+                <style id="prettify_theme"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("prettify_theme","/css/prettify/github-v2.min.css?AfzKxt++K+/lhZBlSjnxwg==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+            
+        
 
     
 
@@ -112,7 +117,7 @@
 <!-- Other Styles -->
 <style>
   body, html {
-    font-family: Arial, sans-serif, "Microsoft YaHei", Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "微软雅黑";
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
     overflow-x: hidden !important;
   }
   
@@ -483,6 +488,12 @@
 
     <!-- Share QQ -->
     
+        <a class="post_share-link" href="http://connect.qq.com/widget/shareqq/index.html?site=Roman&#39;s blog&title=CVE-2019-0708&summary=&pics=http://yoursite.com/img/favicon.png&url=http://yoursite.com/post/24c02121.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 QQ
+            </li>
+        </a>
+    
 
     <!-- Share Telegram -->
     
@@ -506,9 +517,7 @@
 </ul>
 <h2 id="防范方法"><a href="#防范方法" class="headerlink" title="防范方法"></a>防范方法</h2><h3 id="下载相关补丁"><a href="#下载相关补丁" class="headerlink" title="下载相关补丁"></a>下载相关补丁</h3><p><a href="https://portal.msrc.microsoft.com/en-US/security-guidance/advisory/CVE-2019-0708" target="_blank" rel="noopener">windows7和windows server 08补丁下载</a><br><a href="https://support.microsoft.com/en-us/help/4500705/customer-guidance-for-cve-2019-0708" target="_blank" rel="noopener">windows xp和windows sever 03补丁下载</a></p>
 <h3 id="开启NLP"><a href="#开启NLP" class="headerlink" title="开启NLP"></a>开启NLP</h3><p>打开 控制面板\所有控制面板项\系统，点开右侧的远程设置，在远程桌面项中切换为 </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">仅允许运行使用网络级别身份验证的远程桌面的计算机连接（更安全）（N）</span><br></pre></td></tr></table></figure>
-
-<p>一般为第三项</p>
+<pre><code>仅允许运行使用网络级别身份验证的远程桌面的计算机连接（更安全）（N）</code></pre><p>一般为第三项</p>
 <h2 id="相关利用方法"><a href="#相关利用方法" class="headerlink" title="相关利用方法"></a>相关利用方法</h2><p><a href="https://github.com/rapid7/metasploit-framework/pull/12283" target="_blank" rel="noopener">cve-2019-0708的POC和EXP</a></p>
 <ul>
 <li>新增<br><a href="https://github.com/coolboy4me/cve-2019-0708_bluekeep_rce" target="_blank" rel="noopener">xp的利用方法</a></li>
@@ -658,7 +667,7 @@
             </a>
             <ul class="dropdown-menu">
             <li>
-                <a class="sidebar_archives-link" href="/archives/2020/07/">七月 2020<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/11/">十一月 2019<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/10/">十月 2019<span class="sidebar_archives-count">5</span></a>
+                <a class="sidebar_archives-link" href="/archives/2020/07/">七月 2020<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/11/">十一月 2019<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/10/">十月 2019<span class="sidebar_archives-count">5</span></a>
             </ul>
         </li>
         
@@ -666,11 +675,34 @@
 
     <!-- Categories  -->
     
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">chrome_reader_mode</i>
+                
+                分类
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+                <li>
+                <a class="sidebar_archives-link" href="/categories/Linux/">Linux<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/categories/Windows/">Windows<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/categories/hexo/">hexo<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/categories/python/">python<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/categories/安全漏洞/">安全漏洞<span class="sidebar_archives-count">3</span></a>
+            </ul>
+        </li>
+        
+    
 
     <!-- Pages  -->
     
 
     <!-- Article Number  -->
+    
+        <li>
+            <a href="/archives">
+                文章总数
+                <span class="sidebar-badge">11</span>
+            </a>
+        </li>
+        
     
 </ul>
 
@@ -881,6 +913,12 @@ It will not impact the appearance and can give developers a lot of support :)
 
 <!-- Import prettify js  -->
 
+    
+        
+            <script>lsloader.load("prettify_js","/js/prettify.min.js?WN07fivHQSMKWy7BmHBB6w==", true)</script>
+        
+    
+
 
 
 <!-- Window Load -->
@@ -891,6 +929,13 @@ It will not impact the appearance and can give developers a lot of support :)
         $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
     });
 
+    
+        
+            $(function() {
+                $('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto;');
+                prettyPrint();
+                })
+        
     
     
 </script>

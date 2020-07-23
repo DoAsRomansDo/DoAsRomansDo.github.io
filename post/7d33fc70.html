@@ -84,7 +84,7 @@
     <!-- RSS -->
     
         
-            <link rel="alternate" type="application/atom+xml" href="/atom.xml">
+            <link rel="alternate" type="application/rss+xml" href="/rss2.xml">
         
     
 
@@ -102,6 +102,11 @@
         <style id="style_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("style_css","/css/style.min.css?MKetZV3cUTfDxvMffaOezg==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
 
         
+            
+                <style id="prettify_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("prettify_css","/css/prettify.min.css?zp8STOU9v89XWFEnN+6YmQ==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+                <style id="prettify_theme"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("prettify_theme","/css/prettify/github-v2.min.css?AfzKxt++K+/lhZBlSjnxwg==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+            
+        
 
     
 
@@ -112,7 +117,7 @@
 <!-- Other Styles -->
 <style>
   body, html {
-    font-family: Arial, sans-serif, "Microsoft YaHei", Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "微软雅黑";
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
     overflow-x: hidden !important;
   }
   
@@ -483,6 +488,12 @@
 
     <!-- Share QQ -->
     
+        <a class="post_share-link" href="http://connect.qq.com/widget/shareqq/index.html?site=Roman&#39;s blog&title=Ubuntu16.04 server 安装中的坑&summary=&pics=http://yoursite.com/img/favicon.png&url=http://yoursite.com/post/7d33fc70.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 QQ
+            </li>
+        </a>
+    
 
     <!-- Share Telegram -->
     
@@ -497,10 +508,13 @@
     
         <h2 id="1-安装busybox-initramfs错误"><a href="#1-安装busybox-initramfs错误" class="headerlink" title="1.安装busybox initramfs错误"></a>1.安装busybox initramfs错误</h2><p>1.如果你是用中文安装的会出现这个错误，需要用英文安装<br>2.在语言界面按下F6进选项，可以在下面看到一串参数行，把里面的quiet修改为all_generic_ide回车就可正常安装</p>
 <h2 id="2-安装grub-pc失败"><a href="#2-安装grub-pc失败" class="headerlink" title="2.安装grub-pc失败"></a>2.安装grub-pc失败</h2><p>可以按快捷键Alt+F4查看日志，如果是连接失败，说明源有问题，返回打开shell将/tartget/apt/sources.list中添加国内xenial源(根据你安装的版本来)，这里给出一个我找到的,应该能用</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">deb http://mirrors.aliyun.com/ubuntu/ xenial main restricted universe multiverse</span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ xenial main restricted universe multiverse</span><br></pre></td></tr></table></figure>
-
+<pre><code class="bash">deb http://mirrors.aliyun.com/ubuntu/ xenial main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ xenial main restricted universe multiverse</code></pre>
 <p>你可以执行以下指令测试或者直接安装：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">chroot /target</span><br><span class="line">apt-get update</span><br><span class="line">apt-get install grub-pc</span><br></pre></td></tr></table></figure>
+<pre><code class="bash">chroot /target
+apt-get update
+apt-get install grub-pc</code></pre>
+
         
     
 
@@ -644,7 +658,7 @@
             </a>
             <ul class="dropdown-menu">
             <li>
-                <a class="sidebar_archives-link" href="/archives/2020/07/">七月 2020<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/11/">十一月 2019<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/10/">十月 2019<span class="sidebar_archives-count">5</span></a>
+                <a class="sidebar_archives-link" href="/archives/2020/07/">七月 2020<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/11/">十一月 2019<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/10/">十月 2019<span class="sidebar_archives-count">5</span></a>
             </ul>
         </li>
         
@@ -652,11 +666,34 @@
 
     <!-- Categories  -->
     
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">chrome_reader_mode</i>
+                
+                分类
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+                <li>
+                <a class="sidebar_archives-link" href="/categories/Linux/">Linux<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/categories/Windows/">Windows<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/categories/hexo/">hexo<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/categories/python/">python<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/categories/安全漏洞/">安全漏洞<span class="sidebar_archives-count">3</span></a>
+            </ul>
+        </li>
+        
+    
 
     <!-- Pages  -->
     
 
     <!-- Article Number  -->
+    
+        <li>
+            <a href="/archives">
+                文章总数
+                <span class="sidebar-badge">11</span>
+            </a>
+        </li>
+        
     
 </ul>
 
@@ -867,6 +904,12 @@ It will not impact the appearance and can give developers a lot of support :)
 
 <!-- Import prettify js  -->
 
+    
+        
+            <script>lsloader.load("prettify_js","/js/prettify.min.js?WN07fivHQSMKWy7BmHBB6w==", true)</script>
+        
+    
+
 
 
 <!-- Window Load -->
@@ -877,6 +920,13 @@ It will not impact the appearance and can give developers a lot of support :)
         $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
     });
 
+    
+        
+            $(function() {
+                $('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto;');
+                prettyPrint();
+                })
+        
     
     
 </script>

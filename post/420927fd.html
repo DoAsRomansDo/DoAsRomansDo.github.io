@@ -84,7 +84,7 @@
     <!-- RSS -->
     
         
-            <link rel="alternate" type="application/atom+xml" href="/atom.xml">
+            <link rel="alternate" type="application/rss+xml" href="/rss2.xml">
         
     
 
@@ -102,6 +102,11 @@
         <style id="style_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("style_css","/css/style.min.css?MKetZV3cUTfDxvMffaOezg==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
 
         
+            
+                <style id="prettify_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("prettify_css","/css/prettify.min.css?zp8STOU9v89XWFEnN+6YmQ==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+                <style id="prettify_theme"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("prettify_theme","/css/prettify/github-v2.min.css?AfzKxt++K+/lhZBlSjnxwg==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+            
+        
 
     
 
@@ -112,7 +117,7 @@
 <!-- Other Styles -->
 <style>
   body, html {
-    font-family: Arial, sans-serif, "Microsoft YaHei", Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "微软雅黑";
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
     overflow-x: hidden !important;
   }
   
@@ -242,7 +247,7 @@
 
     
         <meta property="article:published_time" content="Wed Jul 15 2020 15:06:32 GMT+0800">
-        <meta property="article:modified_time" content="Wed Jul 15 2020 15:06:32 GMT+0800">
+        <meta property="article:modified_time" content="Wed Jul 15 2020 15:06:47 GMT+0800">
     
 
     <!-- The Twitter Card protocol -->
@@ -269,7 +274,7 @@
     "mainEntityOfPage": "http://yoursite.com/post/420927fd.html",
     "headline": "hexo主题material配置",
     "datePublished": "Wed Jul 15 2020 15:06:32 GMT+0800",
-    "dateModified": "Wed Jul 15 2020 15:06:32 GMT+0800",
+    "dateModified": "Wed Jul 15 2020 15:06:47 GMT+0800",
     "author": {
         "@type": "Person",
         "name": "Roman",
@@ -483,6 +488,12 @@
 
     <!-- Share QQ -->
     
+        <a class="post_share-link" href="http://connect.qq.com/widget/shareqq/index.html?site=Roman&#39;s blog&title=hexo主题material配置&summary=&pics=http://yoursite.com/img/favicon.png&url=http://yoursite.com/post/420927fd.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 QQ
+            </li>
+        </a>
+    
 
     <!-- Share Telegram -->
     
@@ -501,18 +512,46 @@
 <h2 id="material配置utteranc"><a href="#material配置utteranc" class="headerlink" title="material配置utteranc"></a>material配置utteranc</h2><p>因为我想使用github的issue来当评论栏，常用的有gitment和gitalk，但似乎有点不太安全。<br><a href="https://www.v2ex.com/t/535608" target="_blank" rel="noopener">v2ex-建议大家弃用 Gitalk 和 Gitment 等权限过高的 Github OAuth App</a></p>
 <p>这里我们改用utteranc。其权限划分粒度更细。</p>
 <h3 id="1-安装utteranc生成相应配置"><a href="#1-安装utteranc生成相应配置" class="headerlink" title="1.安装utteranc生成相应配置"></a>1.安装utteranc生成相应配置</h3><p>安装utteranc应用 <a href="https://github.com/apps/utterances。" target="_blank" rel="noopener">https://github.com/apps/utterances。</a><br>指定你要存储评论的仓库，就是.github.io那个项目就行。<br>到<a href="https://utteranc.es/，填写配置，然后他会给你生成一段script。如下所示：" target="_blank" rel="noopener">https://utteranc.es/，填写配置，然后他会给你生成一段script。如下所示：</a></p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"https://utteranc.es/client.js"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">repo</span>=<span class="string">"xxx/xxx.github.io"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">issue-term</span>=<span class="string">"pathname"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">label</span>=<span class="string">"comment"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">theme</span>=<span class="string">"github-light"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">crossorigin</span>=<span class="string">"anonymous"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">async</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
+<pre><code class="html">&lt;script src=&quot;https://utteranc.es/client.js&quot;
+        repo=&quot;xxx/xxx.github.io&quot;
+        issue-term=&quot;pathname&quot;
+        label=&quot;comment&quot;
+        theme=&quot;github-light&quot;
+        crossorigin=&quot;anonymous&quot;
+        async&gt;
+&lt;/script&gt;</code></pre>
 <h3 id="2-将utteranc集成到material"><a href="#2-将utteranc集成到material" class="headerlink" title="2.将utteranc集成到material"></a>2.将utteranc集成到material</h3><p>因为我并不会前端，所以实现的方式可能不太优雅。<br>首先通过阅读相关的代码可以发现。<br>/themes/material/layout/_partial下有个comment.ejs文件内容如下：</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">%</span> <span class="attr">if</span>(<span class="attr">theme.comment.use</span>) &#123; %&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">%-</span> <span class="attr">partial</span>('<span class="attr">_widget</span>/<span class="attr">comment</span>/' + <span class="attr">theme.comment.use</span> + '/<span class="attr">enter</span>') %&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">%</span> &#125; %&gt;</span></span><br></pre></td></tr></table></figure>
-
+<pre><code class="html">&lt;% if(theme.comment.use) { %&gt;
+    &lt;%- partial(&#39;_widget/comment/&#39; + theme.comment.use + &#39;/enter&#39;) %&gt;
+&lt;% } %&gt;</code></pre>
 <p>可以看到真正的实现在/themes/material/layout/_widget/comment目录下。<br>在/themes/material/layout/_widget/comment目录下可以看到changyan、disqus、disqus_clik、gitment、livere、valine这几个文件夹，看来material应该是支持这几种评论插件。</p>
 <p>我们直接依葫芦画瓢复制下gitment的文件夹，重命名为utteranc。<br>文件夹下有三个文件。<br>我稍微改了一些东西，具体的信息如下：</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">common.ejs</span><br><span class="line"><span class="comment">&lt;!-- utteranc --&gt;</span></span><br><span class="line"></span><br><span class="line">enter.ejs</span><br><span class="line"><span class="comment">&lt;!-- 使用 utteranc --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"utteranc-comment"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">%-</span> <span class="attr">partial</span>('<span class="attr">_widget</span>/<span class="attr">comment</span>/' + <span class="attr">theme.comment.use</span> + '/<span class="attr">main</span>') %&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"https://utteranc.es/client.js"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">repo</span>= <span class="string">'&lt;%= theme.comment.utteranc_repo%&gt;'</span></span></span><br><span class="line"><span class="tag">        <span class="attr">issue-term</span>=<span class="string">'&lt;%= theme.comment.utteranc_issue_term%&gt;'</span></span></span><br><span class="line"><span class="tag">        <span class="attr">label</span>=<span class="string">'&lt;%= theme.comment.utteranc_label%&gt;'</span></span></span><br><span class="line"><span class="tag">        <span class="attr">theme</span>=<span class="string">'&lt;%= theme.comment.utteranc_theme%&gt;'</span></span></span><br><span class="line"><span class="tag">        <span class="attr">crossorigin</span>=<span class="string">"anonymous"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">async</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line">main.ejs</span><br><span class="line"><span class="comment">&lt;!-- Utteranc 评论框 --&gt;</span></span><br></pre></td></tr></table></figure>
+<pre><code class="html">common.ejs
+&lt;!-- utteranc --&gt;
 
+enter.ejs
+&lt;!-- 使用 utteranc --&gt;
+&lt;div id=&quot;utteranc-comment&quot;&gt;
+    &lt;%- partial(&#39;_widget/comment/&#39; + theme.comment.use + &#39;/main&#39;) %&gt;
+&lt;/div&gt;
+&lt;script src=&quot;https://utteranc.es/client.js&quot;
+        repo= &#39;&lt;%= theme.comment.utteranc_repo%&gt;&#39;
+        issue-term=&#39;&lt;%= theme.comment.utteranc_issue_term%&gt;&#39;
+        label=&#39;&lt;%= theme.comment.utteranc_label%&gt;&#39;
+        theme=&#39;&lt;%= theme.comment.utteranc_theme%&gt;&#39;
+        crossorigin=&quot;anonymous&quot;
+        async&gt;
+&lt;/script&gt;
+
+main.ejs
+&lt;!-- Utteranc 评论框 --&gt;</code></pre>
 <p>当然你可以直接把生成的配置写在enter.ejs中，不过我还是更细化可配置的形式。<br>如果你是直接粘贴的网站生成的配置，那么就完成了。<br>如果你是用的我的修改，那么还需要在material的_config.yml中填上如下信息。<br>当然你的配置和我的肯定不一样。</p>
-<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">comment:</span></span><br><span class="line"><span class="attr">    use:</span> <span class="string">utteranc</span></span><br><span class="line"><span class="attr">    utteranc_repo:</span> <span class="string">xxxx/xxxx.github.io</span></span><br><span class="line"><span class="attr">    utteranc_issue_term:</span> <span class="string">pathname</span></span><br><span class="line"><span class="attr">    utteranc_label:</span> <span class="string">comment✨💬✨</span></span><br><span class="line"><span class="attr">    utteranc_theme:</span> <span class="string">github-light</span></span><br></pre></td></tr></table></figure>
-
+<pre><code class="yml">comment:
+    use: utteranc
+    utteranc_repo: xxxx/xxxx.github.io
+    utteranc_issue_term: pathname
+    utteranc_label: comment✨💬✨
+    utteranc_theme: github-light</code></pre>
 <p>接下来hexo clean,hexo g,hexo s。看看是否有评论栏了吧。</p>
 
         
@@ -551,6 +590,14 @@
             <!-- Post Prev & Next Nav -->
             <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
     <!-- Prev Nav -->
+    
+        <a href="/post/6ec0946f.html" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
     
 
     <!-- Section Spacer -->
@@ -650,7 +697,7 @@
             </a>
             <ul class="dropdown-menu">
             <li>
-                <a class="sidebar_archives-link" href="/archives/2020/07/">七月 2020<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/11/">十一月 2019<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/10/">十月 2019<span class="sidebar_archives-count">5</span></a>
+                <a class="sidebar_archives-link" href="/archives/2020/07/">七月 2020<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/11/">十一月 2019<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/10/">十月 2019<span class="sidebar_archives-count">5</span></a>
             </ul>
         </li>
         
@@ -658,11 +705,34 @@
 
     <!-- Categories  -->
     
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">chrome_reader_mode</i>
+                
+                分类
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+                <li>
+                <a class="sidebar_archives-link" href="/categories/Linux/">Linux<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/categories/Windows/">Windows<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/categories/hexo/">hexo<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/categories/python/">python<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/categories/安全漏洞/">安全漏洞<span class="sidebar_archives-count">3</span></a>
+            </ul>
+        </li>
+        
+    
 
     <!-- Pages  -->
     
 
     <!-- Article Number  -->
+    
+        <li>
+            <a href="/archives">
+                文章总数
+                <span class="sidebar-badge">11</span>
+            </a>
+        </li>
+        
     
 </ul>
 
@@ -873,6 +943,12 @@ It will not impact the appearance and can give developers a lot of support :)
 
 <!-- Import prettify js  -->
 
+    
+        
+            <script>lsloader.load("prettify_js","/js/prettify.min.js?WN07fivHQSMKWy7BmHBB6w==", true)</script>
+        
+    
+
 
 
 <!-- Window Load -->
@@ -883,6 +959,13 @@ It will not impact the appearance and can give developers a lot of support :)
         $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
     });
 
+    
+        
+            $(function() {
+                $('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto;');
+                prettyPrint();
+                })
+        
     
     
 </script>

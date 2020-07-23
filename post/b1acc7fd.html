@@ -84,7 +84,7 @@
     <!-- RSS -->
     
         
-            <link rel="alternate" type="application/atom+xml" href="/atom.xml">
+            <link rel="alternate" type="application/rss+xml" href="/rss2.xml">
         
     
 
@@ -102,6 +102,11 @@
         <style id="style_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("style_css","/css/style.min.css?MKetZV3cUTfDxvMffaOezg==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
 
         
+            
+                <style id="prettify_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("prettify_css","/css/prettify.min.css?zp8STOU9v89XWFEnN+6YmQ==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+                <style id="prettify_theme"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("prettify_theme","/css/prettify/github-v2.min.css?AfzKxt++K+/lhZBlSjnxwg==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+            
+        
 
     
 
@@ -112,7 +117,7 @@
 <!-- Other Styles -->
 <style>
   body, html {
-    font-family: Arial, sans-serif, "Microsoft YaHei", Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "微软雅黑";
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
     overflow-x: hidden !important;
   }
   
@@ -483,6 +488,12 @@
 
     <!-- Share QQ -->
     
+        <a class="post_share-link" href="http://connect.qq.com/widget/shareqq/index.html?site=Roman&#39;s blog&title=python urllib的urlretrieve下载太慢&summary=&pics=http://yoursite.com/img/favicon.png&url=http://yoursite.com/post/b1acc7fd.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 QQ
+            </li>
+        </a>
+    
 
     <!-- Share Telegram -->
     
@@ -496,10 +507,15 @@
                 <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
     
         <h2 id="urllib的urlretrieve方法下载太慢的解决方法"><a href="#urllib的urlretrieve方法下载太慢的解决方法" class="headerlink" title="urllib的urlretrieve方法下载太慢的解决方法"></a>urllib的urlretrieve方法下载太慢的解决方法</h2><p>今天尝试适应python的urllib下载文件，结果发现三线程居然总下载速度只有500kb/s，使用CMD的curl命令下载速度是这个的几倍，因此经过我的实验和查证，可以使用urlopen的方法来替代</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">resp = urllib.urlopen(URL)</span><br><span class="line">respHtml = resp.read()</span><br><span class="line">binfile = open(DownloadFilePath, <span class="string">"wb"</span>)</span><br><span class="line">binfile.write(respHtml)</span><br><span class="line">binfile.close()</span><br></pre></td></tr></table></figure>
-
+<pre><code class="python">resp = urllib.urlopen(URL)
+respHtml = resp.read()
+binfile = open(DownloadFilePath, &quot;wb&quot;)
+binfile.write(respHtml)
+binfile.close()</code></pre>
 <p>直接获取数据，二进制保存到文件，这样比直接使用urlretrieve快许多。<br>或者直接使用curl命令</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line">os.system(<span class="string">'curl -o '</span> + DownloadFilePath + <span class="string">' '</span> + URL)</span><br></pre></td></tr></table></figure>
+<pre><code class="python">import os
+os.system(&#39;curl -o &#39; + DownloadFilePath + &#39; &#39; + URL)</code></pre>
+
         
     
 
@@ -643,7 +659,7 @@
             </a>
             <ul class="dropdown-menu">
             <li>
-                <a class="sidebar_archives-link" href="/archives/2020/07/">七月 2020<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/11/">十一月 2019<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/10/">十月 2019<span class="sidebar_archives-count">5</span></a>
+                <a class="sidebar_archives-link" href="/archives/2020/07/">七月 2020<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/11/">十一月 2019<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2019/10/">十月 2019<span class="sidebar_archives-count">5</span></a>
             </ul>
         </li>
         
@@ -651,11 +667,34 @@
 
     <!-- Categories  -->
     
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">chrome_reader_mode</i>
+                
+                分类
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+                <li>
+                <a class="sidebar_archives-link" href="/categories/Linux/">Linux<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/categories/Windows/">Windows<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/categories/hexo/">hexo<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/categories/python/">python<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/categories/安全漏洞/">安全漏洞<span class="sidebar_archives-count">3</span></a>
+            </ul>
+        </li>
+        
+    
 
     <!-- Pages  -->
     
 
     <!-- Article Number  -->
+    
+        <li>
+            <a href="/archives">
+                文章总数
+                <span class="sidebar-badge">11</span>
+            </a>
+        </li>
+        
     
 </ul>
 
@@ -866,6 +905,12 @@ It will not impact the appearance and can give developers a lot of support :)
 
 <!-- Import prettify js  -->
 
+    
+        
+            <script>lsloader.load("prettify_js","/js/prettify.min.js?WN07fivHQSMKWy7BmHBB6w==", true)</script>
+        
+    
+
 
 
 <!-- Window Load -->
@@ -876,6 +921,13 @@ It will not impact the appearance and can give developers a lot of support :)
         $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
     });
 
+    
+        
+            $(function() {
+                $('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto;');
+                prettyPrint();
+                })
+        
     
     
 </script>
