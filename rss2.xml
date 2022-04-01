@@ -9,8 +9,28 @@
     <atom:link href="/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description></description>
-    <pubDate>Thu, 23 Jul 2020 05:52:32 GMT</pubDate>
+    <pubDate>Fri, 01 Apr 2022 12:46:21 GMT</pubDate>
     <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>Windows_terminal添加anaconda的shell环境</title>
+      <link>http://romanarcher.github.io/post/d47ad02c.html</link>
+      <guid>http://romanarcher.github.io/post/d47ad02c.html</guid>
+      <pubDate>Fri, 01 Apr 2022 12:44:26 GMT</pubDate>
+      <description>
+      
+        
+        
+          &lt;h2 id=&quot;将Anaconda-Powershell添加到terminal&quot;&gt;&lt;a href=&quot;#将Anaconda-Powershell添加到terminal&quot; class=&quot;headerlink&quot; title=&quot;将Anaconda Powershell添加到termina
+        
+      
+      </description>
+      
+      
+      <content:encoded><![CDATA[<h2 id="将Anaconda-Powershell添加到terminal"><a href="#将Anaconda-Powershell添加到terminal" class="headerlink" title="将Anaconda Powershell添加到terminal"></a>将Anaconda Powershell添加到terminal</h2><hr><p>最近需要使用anaconda，anaconda只提供了Anaconda Powershell Prompt (anaconda)。然而我一般都是使用terminal。因此怎么将Anaconda Powershell Prompt (anaconda)集成到terminal里面呢？之前我做过将git-bash集成到terminal，原理是相似的。</p><h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>右键Anaconda Powershell Prompt (anaconda)选择属性可以在目标那一项里面看到</p><pre><code>%windir%\System32\WindowsPowerShell\v1.0\powershell.exe -ExecutionPolicy ByPass -NoExit -Command &quot;&amp; &#39;D:\anaconda\shell\condabin\conda-hook.ps1&#39; ; conda activate &#39;D:\anaconda&#39; &quot;</code></pre><p>可以看到其本质只是个powershell带了一些参数而已。因此修改下配置即可。</p><h3 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h3><p>在profiles的list下添加如下配置</p><pre><code class="json">{    &quot;colorScheme&quot;: &quot;Solarized Dark - Patched&quot;,    &quot;commandline&quot;: &quot;%windir%\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -ExecutionPolicy ByPass -NoExit -Command \&quot;&amp; &#39;D:\\anaconda\\shell\\condabin\\conda-hook.ps1&#39; ; conda activate &#39;D:\\anaconda&#39; \&quot;&quot;,    &quot;guid&quot;: &quot;{6bb82228-0109-f6bf-e4da-9cdcd6c3d9c9}&quot;,    &quot;hidden&quot;: false,    &quot;icon&quot;: &quot;D:\\anaconda\\Menu\\anaconda-navigator.ico&quot;,    &quot;name&quot;: &quot;anaconda&quot;,    &quot;useAcrylic&quot;: true},</code></pre><p>commandline字段填写之前看到的即可。icon我用的是anaconda-navigator的图标。</p><h3 id="同理可得"><a href="#同理可得" class="headerlink" title="同理可得"></a>同理可得</h3><p>visual studio提供的x86 Native Tools Command Prompt之类的东西也是相同的原理，我们也可以添加进去。</p><h3 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h3><p><img src="https://raw.githubusercontent.com/RomanArcher/mypicgoimg/main/img/20220401204208.gif" alt></p>]]></content:encoded>
+      
+      <comments>http://romanarcher.github.io/post/d47ad02c.html#disqus_thread</comments>
+    </item>
     
     <item>
       <title>Windows_terminal添加git-bash</title>
@@ -173,6 +193,26 @@
     </item>
     
     <item>
+      <title>Hello World</title>
+      <link>http://romanarcher.github.io/post/4a17b156.html</link>
+      <guid>http://romanarcher.github.io/post/4a17b156.html</guid>
+      <pubDate>Fri, 18 Oct 2019 07:26:13 GMT</pubDate>
+      <description>
+      
+        
+        
+          &lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;https://hexo.
+        
+      
+      </description>
+      
+      
+      <content:encoded><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><pre><code class="bash">$ hexo new &quot;My New Post&quot;</code></pre><p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><pre><code class="bash">$ hexo server</code></pre><p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><pre><code class="bash">$ hexo generate</code></pre><p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><pre><code class="bash">$ hexo deploy</code></pre><p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>]]></content:encoded>
+      
+      <comments>http://romanarcher.github.io/post/4a17b156.html#disqus_thread</comments>
+    </item>
+    
+    <item>
       <title>RDP建立过程</title>
       <link>http://romanarcher.github.io/post/1e6d0424.html</link>
       <guid>http://romanarcher.github.io/post/1e6d0424.html</guid>
@@ -210,26 +250,6 @@
       <content:encoded><![CDATA[<h2 id="CVE-2019-0708"><a href="#CVE-2019-0708" class="headerlink" title="CVE-2019-0708"></a>CVE-2019-0708</h2><p>CVE-2019-0708是微软于5月14日公布的一个远程桌面服务的远程代码执行漏洞(CVE-2019-0708)，利用此漏洞可以直接获取windows服务器的权限。<br>现在网上已经有安全研究人员披露该漏洞远程crash PoC，对于某些系统已经能获取shell执行命令了。</p><h2 id="影响系统"><a href="#影响系统" class="headerlink" title="影响系统"></a>影响系统</h2><ul><li>Windows 2003</li><li>Windows XP</li><li>Windows Vista</li><li>Windows 7</li><li>Windows Server 2008</li><li>Windows Server 2008 R2</li></ul><h2 id="防范方法"><a href="#防范方法" class="headerlink" title="防范方法"></a>防范方法</h2><h3 id="下载相关补丁"><a href="#下载相关补丁" class="headerlink" title="下载相关补丁"></a>下载相关补丁</h3><p><a href="https://portal.msrc.microsoft.com/en-US/security-guidance/advisory/CVE-2019-0708" target="_blank" rel="noopener">windows7和windows server 08补丁下载</a><br><a href="https://support.microsoft.com/en-us/help/4500705/customer-guidance-for-cve-2019-0708" target="_blank" rel="noopener">windows xp和windows sever 03补丁下载</a></p><h3 id="开启NLP"><a href="#开启NLP" class="headerlink" title="开启NLP"></a>开启NLP</h3><p>打开 控制面板\所有控制面板项\系统，点开右侧的远程设置，在远程桌面项中切换为 </p><pre><code>仅允许运行使用网络级别身份验证的远程桌面的计算机连接（更安全）（N）</code></pre><p>一般为第三项</p><h2 id="相关利用方法"><a href="#相关利用方法" class="headerlink" title="相关利用方法"></a>相关利用方法</h2><p><a href="https://github.com/rapid7/metasploit-framework/pull/12283" target="_blank" rel="noopener">cve-2019-0708的POC和EXP</a></p><ul><li>新增<br><a href="https://github.com/coolboy4me/cve-2019-0708_bluekeep_rce" target="_blank" rel="noopener">xp的利用方法</a></li></ul><h2 id="后言"><a href="#后言" class="headerlink" title="后言"></a>后言</h2><p>下篇文章讲讲一下rdp协议的一些知识<br><a href="https://doasromansdo.github.io/post/1e6d0424.html#more" target="_blank" rel="noopener">rpd的连接过程</a></p>]]></content:encoded>
       
       <comments>http://romanarcher.github.io/post/24c02121.html#disqus_thread</comments>
-    </item>
-    
-    <item>
-      <title>Hello World</title>
-      <link>http://romanarcher.github.io/post/4a17b156.html</link>
-      <guid>http://romanarcher.github.io/post/4a17b156.html</guid>
-      <pubDate>Tue, 15 Oct 2019 02:54:17 GMT</pubDate>
-      <description>
-      
-        
-        
-          &lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;https://hexo.
-        
-      
-      </description>
-      
-      
-      <content:encoded><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><pre><code class="bash">$ hexo new &quot;My New Post&quot;</code></pre><p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><pre><code class="bash">$ hexo server</code></pre><p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><pre><code class="bash">$ hexo generate</code></pre><p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><pre><code class="bash">$ hexo deploy</code></pre><p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>]]></content:encoded>
-      
-      <comments>http://romanarcher.github.io/post/4a17b156.html#disqus_thread</comments>
     </item>
     
   </channel>

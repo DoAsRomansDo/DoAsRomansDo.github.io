@@ -1,6 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Windows_terminal添加anaconda的shell环境</title>
+    <url>/post/d47ad02c.html</url>
+    <content><![CDATA[<h2 id="将Anaconda-Powershell添加到terminal"><a href="#将Anaconda-Powershell添加到terminal" class="headerlink" title="将Anaconda Powershell添加到terminal"></a>将Anaconda Powershell添加到terminal</h2><hr>
+<p>最近需要使用anaconda，anaconda只提供了Anaconda Powershell Prompt (anaconda)。然而我一般都是使用terminal。因此怎么将Anaconda Powershell Prompt (anaconda)集成到terminal里面呢？之前我做过将git-bash集成到terminal，原理是相似的。</p>
+<h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>右键Anaconda Powershell Prompt (anaconda)选择属性可以在目标那一项里面看到</p>
+<pre><code>%windir%\System32\WindowsPowerShell\v1.0\powershell.exe -ExecutionPolicy ByPass -NoExit -Command &quot;&amp; &#39;D:\anaconda\shell\condabin\conda-hook.ps1&#39; ; conda activate &#39;D:\anaconda&#39; &quot;</code></pre><p>可以看到其本质只是个powershell带了一些参数而已。因此修改下配置即可。</p>
+<h3 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h3><p>在profiles的list下添加如下配置</p>
+<pre><code class="json">{
+    &quot;colorScheme&quot;: &quot;Solarized Dark - Patched&quot;,
+    &quot;commandline&quot;: &quot;%windir%\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -ExecutionPolicy ByPass -NoExit -Command \&quot;&amp; &#39;D:\\anaconda\\shell\\condabin\\conda-hook.ps1&#39; ; conda activate &#39;D:\\anaconda&#39; \&quot;&quot;,
+    &quot;guid&quot;: &quot;{6bb82228-0109-f6bf-e4da-9cdcd6c3d9c9}&quot;,
+    &quot;hidden&quot;: false,
+    &quot;icon&quot;: &quot;D:\\anaconda\\Menu\\anaconda-navigator.ico&quot;,
+    &quot;name&quot;: &quot;anaconda&quot;,
+    &quot;useAcrylic&quot;: true
+},</code></pre>
+<p>commandline字段填写之前看到的即可。icon我用的是anaconda-navigator的图标。</p>
+<h3 id="同理可得"><a href="#同理可得" class="headerlink" title="同理可得"></a>同理可得</h3><p>visual studio提供的x86 Native Tools Command Prompt之类的东西也是相同的原理，我们也可以添加进去。</p>
+<h3 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h3><p><img src="https://raw.githubusercontent.com/RomanArcher/mypicgoimg/main/img/20220401204208.gif" alt></p>
+]]></content>
+      <tags>
+        <tag>Windows</tag>
+        <tag>terminal</tag>
+        <tag>anaconda</tag>
+        <tag>工具配置</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Windows_terminal添加git-bash</title>
     <url>/post/6ec0946f.html</url>
     <content><![CDATA[<h2 id="将git-bash添加到terminal"><a href="#将git-bash添加到terminal" class="headerlink" title="将git-bash添加到terminal"></a>将git-bash添加到terminal</h2><hr>
@@ -29,8 +57,8 @@ export LC_ALL=&quot;zh_CN.UTF-8&quot;</code></pre>
       <tags>
         <tag>Windows</tag>
         <tag>terminal</tag>
-        <tag>git-bash</tag>
         <tag>工具配置</tag>
+        <tag>git-bash</tag>
       </tags>
   </entry>
   <entry>
@@ -993,6 +1021,20 @@ os.system(&#39;curl -o &#39; + DownloadFilePath + &#39; &#39; + URL)</code></pre
       </tags>
   </entry>
   <entry>
+    <title>Hello World</title>
+    <url>/post/4a17b156.html</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><pre><code class="bash">$ hexo new &quot;My New Post&quot;</code></pre>
+<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><pre><code class="bash">$ hexo server</code></pre>
+<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><pre><code class="bash">$ hexo generate</code></pre>
+<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><pre><code class="bash">$ hexo deploy</code></pre>
+<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+]]></content>
+  </entry>
+  <entry>
     <title>RDP建立过程</title>
     <url>/post/1e6d0424.html</url>
     <content><![CDATA[<h2 id="RDP协议的官方文档"><a href="#RDP协议的官方文档" class="headerlink" title="RDP协议的官方文档"></a>RDP协议的官方文档</h2><p><a href="https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-rdpbcgr/5073f4ed-1e93-45e1-b039-6e30c385867c" target="_blank" rel="noopener">[MS-RDPBCGR]: Remote Desktop Protocol: Basic Connectivity and Graphics Remoting</a></p>
@@ -1056,19 +1098,5 @@ os.system(&#39;curl -o &#39; + DownloadFilePath + &#39; &#39; + URL)</code></pre
         <tag>windows</tag>
         <tag>rdp</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>Hello World</title>
-    <url>/post/4a17b156.html</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><pre><code class="bash">$ hexo new &quot;My New Post&quot;</code></pre>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><pre><code class="bash">$ hexo server</code></pre>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><pre><code class="bash">$ hexo generate</code></pre>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><pre><code class="bash">$ hexo deploy</code></pre>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-]]></content>
   </entry>
 </search>
